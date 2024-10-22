@@ -30,8 +30,8 @@ return new class extends Migration
                 $table->string('keeping_type_selex_code', 64)->nullable(true)->default(null)->comment('Код типов содержания животного в Селэксе');
                 $table->addColumn('system.system_status', 'keeping_type_status')->nullable(true)->default('enabled')->comment('Статус записи');
                 $table->addColumn('system.system_status_delete', 'keeping_type_status_delete')->nullable(true)->default('active')->comment('Статус удаления записи');
-                $table->timestamp('keeping_type_created_at')->nullable(false)->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Дата создания записи');
-                $table->timestamp('update_at')->nullable(false)->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Дата удаления записи');
+                // Это поля "created_at" и "updated_at".
+                $table->timestamps();
             });
         }
     }

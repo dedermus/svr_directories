@@ -28,8 +28,8 @@ return new class extends Migration
                 $table->string('gender_selex_code',64)->nullable(true)->default(null)->comment('Код полов животного в Селэксе');
                 $table->addColumn('system.system_status', 'gender_status')->nullable(true)->default('enabled')->comment('Статус записи');
                 $table->addColumn('system.system_status_delete', 'gender_status_delete')->nullable(true)->default('active')->comment('Статус удаления записи');
-                $table->timestamp('gender_created_at')->nullable(false)->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Дата создания записи');
-                $table->timestamp('update_at')->nullable(false)->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Дата удаления записи');
+                // Это поля "created_at" и "updated_at".
+                $table->timestamps();
             });
         }
     }

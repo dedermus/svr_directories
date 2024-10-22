@@ -28,8 +28,8 @@ return new class extends Migration
                 $table->string('mark_status_selex_code' ,64)->nullable(true)->default(null)->comment('Код видов маркирования в Селэксе');
                 $table->addColumn('system.system_status', 'mark_status_status')->nullable(true)->default('enabled')->comment('Статус записи');
                 $table->addColumn('system.system_status_delete', 'mark_status_status_delete')->nullable(true)->default('active')->comment('Статус удаления записи');
-                $table->timestamp('mark_status_created_at')->nullable(false)->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Дата создания записи');
-                $table->timestamp('update_at')->nullable(false)->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Дата удаления записи');
+                // Это поля "created_at" и "updated_at".
+                $table->timestamps();
             });
         }
     }

@@ -43,12 +43,8 @@ return new class extends Migration
                 $table->addColumn('system.system_status_delete', 'breed_status_delete')->nullable(false)->default(
                     'active'
                 )->comment('');
-                $table->timestamp('breed_created_at')->nullable(false)->default(DB::raw('CURRENT_TIMESTAMP'))->comment(
-                    'Дата создания записи'
-                );
-                $table->timestamp('update_at')->nullable(false)->default(DB::raw('CURRENT_TIMESTAMP'))->comment(
-                    'Дата удаления записи'
-                );
+                // Это поля "created_at" и "updated_at".
+                $table->timestamps();
             });
         }
     }

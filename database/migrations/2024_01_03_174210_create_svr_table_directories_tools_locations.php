@@ -29,8 +29,8 @@ return new class extends Migration
                 $table->string('tool_location_selex_code', 64)->nullable(true)->default(null)->comment('Код места нанесения маркировки животного в Селэксе');
                 $table->addColumn('system.system_status', 'tool_location_status')->nullable(true)->default('enabled')->comment('Статус записи');
                 $table->addColumn('system.system_status_delete', 'tool_location_status_delete')->nullable(true)->default('active')->comment('Статус удаления записи');
-                $table->timestamp('tool_location_created_at')->nullable(false)->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Дата создания записи');
-                $table->timestamp('update_at')->nullable(false)->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Дата удаления записи');
+                // Это поля "created_at" и "updated_at".
+                $table->timestamps();
             });
         }
     }
