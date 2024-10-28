@@ -1,5 +1,5 @@
 {
-    "name": "svr/core",
+    "name": "svr/directories",
     "description": "SVR DIRECTORIES - A simple directory  package for SVR",
     "type": "library",
     "license": "MIT",
