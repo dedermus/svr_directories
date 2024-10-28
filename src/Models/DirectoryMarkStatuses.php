@@ -108,4 +108,92 @@ class DirectoryMarkStatuses extends Model
 //			'mark_status_created_at'				=> 'timestamp',
 		];
 	}
+
+    /**
+     * Создать запись
+     *
+     * @param $request
+     *
+     * @return void
+     */
+    public function markStatusCreate($request): void
+    {
+        $this->rules($request);
+        $this->fill($request->all());
+        $this->save();
+    }
+
+    /**
+     * Обновить запись
+     * @param $request
+     *
+     * @return void
+     */
+    public function markStatusUpdate($request): void
+    {
+        // валидация
+        $this->rules($request);
+        // получаем массив полей и значений и з формы
+        $data = $request->all();
+        if (!isset($data[$this->primaryKey])) return;
+        // получаем id
+        $id = $data[$this->primaryKey];
+        // готовим сущность для обновления
+        $modules_data = $this->find($id);
+        // обновляем запись
+        $modules_data->update($data);
+    }
+
+    /**
+     * Валидация входных данных
+     * @param $request
+     *
+     * @return void
+     */
+    private function rules($request): void
+    {
+        // получаем поля со значениями
+        $data = $request->all();
+
+        // получаем значение первичного ключа
+        $id = (isset($data[$this->primaryKey])) ? $data[$this->primaryKey] : null;
+
+        // id - Первичный ключ
+        if (!is_null($id)) {
+            $request->validate(
+                [$this->primaryKey => 'required|exists:' . $this->getTable() . ',' . $this->primaryKey],
+                [$this->primaryKey => trans('svr-core-lang::validation.required')],
+            );
+        }
+
+        // mark_status_guid_self - Гуид в СВР
+        $request->validate(
+            ['mark_status_guid_self' => 'required|string|min:3|max:64'],
+            ['mark_status_guid_self' => trans('svr-core-lang::validation')],
+        );
+
+        // mark_status_value_horriot - Гуид в хорриот
+        $request->validate(
+            ['mark_status_value_horriot' => 'required|string|min:3|max:64'],
+            ['mark_status_value_horriot' => trans('svr-core-lang::validation')],
+        );
+
+        // mark_status_name - имя
+        $request->validate(
+            ['mark_status_name' => 'required|string|min:2|max:100'],
+            ['mark_status_name' => trans('svr-core-lang::validation')],
+        );
+
+        // mark_status_status - Статус
+        $request->validate(
+            ['mark_status_status' => 'required'],
+            ['mark_status_status' => trans('svr-core-lang::validation')],
+        );
+
+        // mark_status_status_delete - Статус удаления
+        $request->validate(
+            ['mark_status_status_delete' => 'required'],
+            ['mark_status_status_delete' => trans('svr-core-lang::validation')],
+        );
+    }
 }

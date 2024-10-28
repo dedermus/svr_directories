@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         DB::statement('CREATE SCHEMA IF NOT EXISTS directories');
-        DB::statement("COMMENT ON SCHEMA data IS 'Схема справочников'");
+        DB::statement("COMMENT ON SCHEMA directories IS 'Схема справочников'");
     }
 
     /**

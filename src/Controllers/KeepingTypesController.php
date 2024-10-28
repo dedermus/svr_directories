@@ -3,17 +3,14 @@
 namespace App\Admin\Controllers\Directory;
 
 use App\Models\Directory\DirectoryKeepingTypes;
-use App\SystemStatusDeleteEnum;
-use App\SystemStatusEnum;
-use Illuminate\Support\Facades\Log;
-use OpenAdminCore\Admin\Auth\Permission;
 use OpenAdminCore\Admin\Facades\Admin;
 use OpenAdminCore\Admin\Controllers\AdminController;
 use OpenAdminCore\Admin\Form;
 use OpenAdminCore\Admin\Grid;
-use Illuminate\Support\Facades\DB;
 use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
+use Svr\Core\Enums\SystemStatusDeleteEnum;
+use Svr\Core\Enums\SystemStatusEnum;
 
 
 class KeepingTypesController extends AdminController
@@ -147,30 +144,44 @@ class KeepingTypesController extends AdminController
 		$form->text('keeping_type_guid_self', __('svr.directory.guid_self'))
 			->readonly(true)
 			->required()
-			->rules('required|min:3|max:64', ['min' => "Надо больше :min", 'max' => 'надо меньше :max'])
 			->help(__('svr.directory.guid_self'));
 		$form->text('keeping_type_guid_horriot', __('svr.directory.guid_horriot'))
 			->readonly(true)
-			->rules('required|min:3|max:64', ['min' => "Надо больше :min", 'max' => 'надо меньше :max'])
+			->required()
 			->help(__('svr.directory.guid_horriot'));
 		$form->text('keeping_type_uuid_horriot', __('svr.directory.uuid_horriot'))
 			->readonly(true)
-			->rules('required|min:3|max:64', ['min' => "Надо больше :min", 'max' => 'надо меньше :max'])
+			->required()
 			->help(__('svr.directory.uuid_horriot'));
 		$form->text('keeping_type_name', __('svr.directory.keeping_types.keeping_type_name'))
-			->rules('required|min:2|max:100', ['min' => "Надо больше :min", 'max' => 'надо меньше :max'])
+			->required()
 			->help(__('svr.directory.keeping_types.keeping_type_name'));
 		$form->text('keeping_type_selex_code', __('svr.directory.selex_code'))
 			->help(__('svr.directory.selex_code'));
-		$form->select('specie_status', __('svr.directory.item_status'))
+		$form->select('keeping_type_status', __('svr.directory.item_status'))
 			->options(SystemStatusEnum::get_option_list())
-			->default('enabled')->rules('required');
+			->default('enabled')->required();
 		$form->select('keeping_type_status_delete', trans('svr.directory.item_status_delete'))
 			->options(SystemStatusDeleteEnum::get_option_list())->default('active')
-			->readonly(true)->rules('required');
+			->readonly(true)->required();
 
         $form->date('keeping_type_created_at', __('svr.directory.created_at'));
         $form->date('update_at', __('svr.directory.update_at'));
+
+        // обработка формы
+        $form->saving(function (Form $form)
+        {
+            // создается текущая страница формы.
+            if ($form->isCreating())
+            {
+                (new DirectoryKeepingTypes)->keepingTypeCreate(request());
+            } else
+                // обновляется текущая страница формы.
+                if ($form->isEditing())
+                {
+                    (new DirectoryKeepingTypes)->keepingTypeUpdate(request());
+                }
+        });
 
         return $form;
     }

@@ -5,17 +5,15 @@ namespace App\Admin\Controllers\Directory;
 
 use App\Models\Directory\DirectoryAnimalsBreeds;
 use App\Models\Directory\DirectoryAnimalsSpecies;
-use App\SystemStatusDeleteEnum;
-use App\SystemStatusEnum;
-use Illuminate\Support\Facades\Log;
-use OpenAdminCore\Admin\Auth\Permission;
+use Illuminate\Support\Facades\Request;
 use OpenAdminCore\Admin\Facades\Admin;
 use OpenAdminCore\Admin\Controllers\AdminController;
 use OpenAdminCore\Admin\Form;
 use OpenAdminCore\Admin\Grid;
-use Illuminate\Support\Facades\DB;
 use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
+use Svr\Core\Enums\SystemStatusDeleteEnum;
+use Svr\Core\Enums\SystemStatusEnum;
 
 
 class AnimalsBreedsController extends AdminController
@@ -163,36 +161,63 @@ class AnimalsBreedsController extends AdminController
 		$form->select('specie_id', __('svr.directory.animals_species.specie_id'))
 			->readonly(true)
 			->options(DirectoryAnimalsSpecies::all()->pluck('specie_name', 'specie_id'))
-			->rules('required')
+			->required()
 			->help(__('svr.directory.animals_species.specie_id'));
 		$form->text('breed_guid_self', __('svr.directory.guid_self'))
 			->readonly(true)
 			->required()
-			->rules('required|min:3|max:64', ['min' => "Надо больше :min", 'max' => 'надо меньше :max'])
 			->help(__('svr.directory.guid_self'));
 		$form->text('breed_guid_horriot', __('svr.directory.guid_horriot'))
 			->readonly(true)
-			->rules('required|min:3|max:64', ['min' => "Надо больше :min", 'max' => 'надо меньше :max'])
+			->required()
 			->help(__('svr.directory.guid_horriot'));
 		$form->text('breed_uuid_horriot', __('svr.directory.uuid_horriot'))
 			->readonly(true)
-			->rules('required|min:3|max:64', ['min' => "Надо больше :min", 'max' => 'надо меньше :max'])
+			->required()
 			->help(__('svr.directory.uuid_horriot'));
 		$form->text('breed_name', __('svr.directory.animals_breeds.breed_name'))
-			->rules('required|min:2|max:100', ['min' => "Надо больше :min", 'max' => 'надо меньше :max'])
+			->required()
 			->help(__('svr.directory.animals_breeds.breed_name'));
 		$form->text('breed_selex_code', __('svr.directory.selex_code'))
 			->help(__('svr.directory.selex_code'));
 		$form->select('breed_status', __('svr.directory.item_status'))
 			->options(SystemStatusEnum::get_option_list())
-			->default('enabled')->rules('required');
+			->default('enabled')->required();
 		$form->select('breed_status_delete', trans('svr.directory.item_status_delete'))
 			->options(SystemStatusDeleteEnum::get_option_list())->default('active')
-			->readonly(true)->rules('required');
+			->readonly(true)->required();
 
         $form->date('breed_created_at', __('svr.directory.created_at'));
         $form->date('update_at', __('svr.directory.update_at'));
 
+        // обработка формы
+        $form->saving(function (Form $form)
+        {
+            // создается текущая страница формы.
+            if ($form->isCreating())
+            {
+                (new DirectoryAnimalsBreeds)->animalBreedCreate(request());
+            } else
+                // обновляется текущая страница формы.
+                if ($form->isEditing())
+                {
+                    (new DirectoryAnimalsBreeds)->animalBreedUpdate(request());
+                }
+        });
+
         return $form;
+    }
+
+    public function listBreeds()
+    {
+        $list_district = [];
+        $request = Request::instance();
+        $region_id = $request->request->get('query');
+
+        if (!empty($region_id))
+        {
+            $list_district = DirectoryAnimalsBreeds::where('breed_id', $region_id)->get(['breed_id', 'breed_name']);
+        }
+        return $list_district;
     }
 }

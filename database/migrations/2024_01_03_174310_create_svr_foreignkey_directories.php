@@ -10,34 +10,23 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('system.system_modules_actions', function (Blueprint $table) {
-            $table->foreign('module_slug')->references('module_slug')->on('system.system_modules')->cascadeOnUpdate()
+        Schema::table('directories.animals_breeds', function (Blueprint $table) {
+            $table->foreign('specie_id')->references('specie_id')->on('directories.animals_species')->cascadeOnUpdate()
                 ->noActionOnDelete();
         });
 
-        Schema::table('system.system_roles_rights', function (Blueprint $table) {
-            $table->foreign('role_slug')->references('role_slug')->on('system.system_roles')->cascadeOnUpdate()
+        Schema::table('directories.keeping_types', function (Blueprint $table) {
+            $table->foreign('specie_id')->references('specie_id')->on('directories.animals_species')->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreign('right_slug')->references('right_slug')->on('system.system_modules_actions')
-                ->cascadeOnUpdate()->cascadeOnDelete();
         });
 
-        Schema::table('system.system_users_notifications', function (Blueprint $table) {
-            $table->foreign('user_id')->references('user_id')->on('system.system_users')->cascadeOnUpdate()
-                ->noActionOnDelete();
-            $table->foreign('author_id')->references('user_id')->on('system.system_users')->cascadeOnUpdate()
+        Schema::table('directories.countries_regions_districts', function (Blueprint $table) {
+            $table->foreign('region_id')->references('region_id')->on('directories.countries_regions')->cascadeOnUpdate()
                 ->noActionOnDelete();
         });
 
-        Schema::table('system.system_users_roles', function (Blueprint $table) {
-            $table->foreign('user_id')->references('user_id')->on('system.system_users')->cascadeOnUpdate()
-                ->noActionOnDelete();
-            $table->foreign('role_slug')->references('role_slug')->on('system.system_roles')->cascadeOnUpdate()
-                ->noActionOnDelete();
-        });
-
-        Schema::table('system.system_users_tokens', function (Blueprint $table) {
-            $table->foreign('user_id')->references('user_id')->on('system.system_users')->cascadeOnUpdate()
+        Schema::table('directories.countries_regions', function (Blueprint $table) {
+            $table->foreign('country_id')->references('country_id')->on('directories.countries')->cascadeOnUpdate()
                 ->noActionOnDelete();
         });
     }
@@ -47,28 +36,20 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('system.system_users_tokens', function (Blueprint $table) {
-            $table->dropForeign('user_id');
+        Schema::table('directories.countries_regions', function (Blueprint $table) {
+            $table->dropForeign('country_id');
         });
 
-        Schema::table('system.system_users_roles', function (Blueprint $table) {
-            $table->dropForeign('role_slug');
-            $table->dropForeign('user_id');
+        Schema::table('directories.countries_regions_districts', function (Blueprint $table) {
+            $table->dropForeign('region_id');
         });
 
-        Schema::table('system.system_users_notifications', function (Blueprint $table) {
-            $table->dropForeign('author_id');
-            $table->dropForeign('user_id');
+        Schema::table('directories.keeping_types', function (Blueprint $table) {
+            $table->dropForeign('specie_id');
         });
 
-        Schema::table('system.system_roles_rights', function (Blueprint $table) {
-            $table->dropForeign('right_slug');
-            $table->dropForeign('role_slug');
+        Schema::table('directories.animals_breeds', function (Blueprint $table) {
+            $table->dropForeign('specie_id');
         });
-
-        Schema::table('system.system_modules_actions', function (Blueprint $table) {
-            $table->dropForeign('module_slug');
-        });
-
     }
 };
