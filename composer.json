@@ -12,8 +12,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "Svr\\Core\\": "src/",
-            "Svr\\Core\\Seeders\\": "database/seeders/"
+            "Svr\\Directories\\": "src/",
+            "Svr\\Directories\\Seeders\\": "database/seeders/"
         }
     },
     "extra": {
