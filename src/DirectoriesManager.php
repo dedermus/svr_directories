@@ -2,13 +2,22 @@
 
 namespace Svr\Directories;
 
-use App\Admin\Controllers\Directory\AnimalsBreedsController;
-use Svr\Directories\Controllers\LogsHerriotController;
-use Svr\Directories\Controllers\LogsUsersController;
+use Svr\Directories\Controllers\AnimalsBreedsController;
+use Svr\Directories\Controllers\AnimalsGendersController;
+use Svr\Directories\Controllers\AnimalsSpeciesController;
 use OpenAdminCore\Admin\Admin;
 use OpenAdminCore\Admin\Auth\Database\Menu;
 use OpenAdminCore\Admin\Auth\Database\Permission;
 use OpenAdminCore\Admin\Extension;
+use Svr\Directories\Controllers\CountryController;
+use Svr\Directories\Controllers\DistrictController;
+use Svr\Directories\Controllers\MarkStatusesController;
+use Svr\Directories\Controllers\MarkToolTypesController;
+use Svr\Directories\Controllers\OutBasisesController;
+use Svr\Directories\Controllers\OutTypesController;
+use Svr\Directories\Controllers\RegionController;
+use Svr\Directories\Controllers\ToolsLocationsController;
+use Svr\Directories\Seeders\KeepingPurposesSeeder;
 
 class DirectoriesManager extends Extension
 {
@@ -33,16 +42,30 @@ class DirectoriesManager extends Extension
     {
         parent::routes(function ($router) {
             /* @var \Illuminate\Routing\Router $router */
-
+            // страны
+            $router->resource('directories/country', CountryController::class);
+            // области
+            $router->resource('directories/region', RegionController::class);
+            // районы
+            $router->resource('directories/district', DistrictController::class);
+            // виды животных
+            $router->resource('directories/animals_species', AnimalsSpeciesController::class);
+            // пол животного
+            $router->resource('directories/animals_genders', AnimalsGendersController::class);
+            // породы животных
             $router->resource('directories/animals_breeds', AnimalsBreedsController::class);
-
-
-
-
-
-
-            $router->resource('svr/logs_herriot', LogsHerriotController::class);
-            $router->resource('svr/logs_users', LogsUsersController::class);
+            // цели содержания животных
+            $router->resource('directories/keeping_purposes', KeepingPurposesSeeder::class);
+            // виды маркирования
+            $router->resource('directories/mark_statuses', MarkStatusesController::class);
+            // типы маркирования
+            $router->resource('directories/mark_tool_types', MarkToolTypesController::class);
+            // основания выбытия животного
+            $router->resource('directories/out_basises', OutBasisesController::class);
+            // расходы животного
+            $router->resource('directories/out_types', OutTypesController::class);
+            // места нанесения маркировки животного
+            $router->resource('directories/tools_locations', ToolsLocationsController::class);
         });
     }
 
@@ -57,7 +80,7 @@ class DirectoriesManager extends Extension
             'parent_id' => 0,
             'order'     => $lastOrder++,
             'title'     => 'СВР - Справочники',
-            'icon'      => 'icon-copy',
+            'icon'      => 'icon-receipt',
             'uri'       => 'directories',
         ];
         // Если нет пункта в меню, добавляем его
@@ -66,15 +89,65 @@ class DirectoriesManager extends Extension
 
             $menus = [
                 [
-                    'title'     => 'Логи действий пользователей',
-                    'icon'      => 'icon-book-dead',
-                    'uri'       => 'svr/logs_herriot',
+                    'title'     => 'Страны',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/country',
                 ],
                 [
-                    'title'     => 'Логи отправки в Хоррит',
-                    'icon'      => 'icon-cloud',
-                    'uri'       => 'svr/logs_users',
-                ]
+                    'title'     => 'Области',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/region',
+                ],
+                [
+                    'title'     => 'Районы',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/district',
+                ],
+                [
+                    'title'     => 'Виды животных',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/animals_species',
+                ],
+                [
+                    'title'     => 'Пол животного',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/animals_genders',
+                ],
+                [
+                    'title'     => 'Породы животных',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/animals_breeds',
+                ],
+                [
+                    'title'     => 'Цели содержания животных',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/keeping_purposes',
+                ],
+                [
+                    'title'     => 'Виды маркирования',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/mark_statuses',
+                ],
+                [
+                    'title'     => 'Типы маркирования',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/mark_tool_types',
+                ],
+                [
+                    'title'     => 'Основания выбытия животного',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/out_basises',
+                ],
+                [
+                    'title'     => 'Расходы животного',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/out_types',
+                ],
+                [
+                    'title'     => 'Места нанесения маркировки животного',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/tools_locations',
+                ],
             ];
 
             foreach ($menus as $menu) {

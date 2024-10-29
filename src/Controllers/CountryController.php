@@ -2,7 +2,6 @@
 
 namespace Svr\Directories\Controllers;
 
-use App\Models\Directories\DirectoryCountry;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
 use Illuminate\Support\Carbon;
@@ -13,6 +12,7 @@ use OpenAdminCore\Admin\Form;
 use OpenAdminCore\Admin\Grid;
 use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
+use Svr\Directories\Model\DirectoryCountry;
 
 class CountryController extends AdminController
 {
@@ -242,9 +242,9 @@ class CountryController extends AdminController
 
 
 
-		$form->display('country_created_at', __('country_created_at'))
+		$form->display('created_at', __('created_at'))
             ->help(trans('svr.created_at'));
-		$form->display('update_at', __('update_at'))
+		$form->display('updated_at', __('updated_at'))
             ->help(trans('svr.updated_at'));
 
         // Отключить "Продолжить создание"

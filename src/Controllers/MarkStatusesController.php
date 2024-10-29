@@ -2,7 +2,6 @@
 
 namespace Svr\Directories\Controllers;
 
-use App\Models\Directory\DirectoryMarkStatuses;
 use OpenAdminCore\Admin\Facades\Admin;
 use OpenAdminCore\Admin\Controllers\AdminController;
 use OpenAdminCore\Admin\Form;
@@ -11,6 +10,7 @@ use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
+use Svr\Directories\Model\DirectoryMarkStatuses;
 
 class MarkStatusesController extends AdminController
 {
@@ -22,8 +22,8 @@ class MarkStatusesController extends AdminController
     public function index(Content $content)
     {
         return Admin::content(function (Content $content) {
-            $content->header(trans('svr.directory.mark_statuses.title'));
-            $content->description(trans('svr.directory.mark_statuses.description'));
+            $content->header(trans('svr-directories-lang:directories.mark_statuses.title'));
+            $content->description(trans('svr-directories-lang:directories.mark_statuses.description'));
             $content->body($this->grid());
         });
     }
@@ -36,8 +36,8 @@ class MarkStatusesController extends AdminController
     public function create(Content $content)
     {
         return Admin::content(function (Content $content) {
-            $content->header(trans('svr.directory.mark_statuses.title'));
-            $content->description(trans('svr.directory.mark_statuses.create'));
+            $content->header(trans('svr-directories-lang:directories.mark_statuses.title'));
+            $content->description(trans('svr-directories-lang:directories.mark_statuses.create'));
             $content->body($this->form());
         });
     }
@@ -55,8 +55,8 @@ class MarkStatusesController extends AdminController
 		//dd($this->form()->edit($id));
 
         return $content
-            ->title(trans('svr.directory.mark_statuses.title'))
-            ->description(trans('svr.directory.mark_statuses.edit'))
+            ->title(trans('svr-directories-lang:directories.mark_statuses.title'))
+            ->description(trans('svr-directories-lang:directories.mark_statuses.edit'))
             ->row($this->form()->edit($id));
     }
 
@@ -71,8 +71,8 @@ class MarkStatusesController extends AdminController
     public function show($id, Content $content)
     {
 		return $content
-			->title(__('svr.directory.mark_statuses.title'))
-			->description(__('svr.directory.mark_statuses.description'))
+			->title(__('svr-directories-lang:directories.mark_statuses.title'))
+			->description(__('svr-directories-lang:directories.mark_statuses.description'))
 			->body($this->detail($id));
     }
 
@@ -91,13 +91,13 @@ class MarkStatusesController extends AdminController
     protected function grid(): Grid
     {
         $grid = new Grid(new DirectoryMarkStatuses());
-        $grid->column('mark_status_id', __('svr.directory.mark_statuses.mark_status_id'))->sortable();
-		$grid->column('mark_status_guid_self', __('svr.directory.guid_self'))->sortable();
-		$grid->column('mark_status_value_horriot', __('svr.directory.value_horriot'))->sortable();
-		$grid->column('mark_status_name', __('svr.directory.mark_statuses.mark_status_name'))->sortable();
-		$grid->column('mark_status_selex_code', __('svr.directory.selex_code'))->sortable();
-		$grid->column('mark_status_status', __('svr.directory.item_status'))->sortable();
-		$grid->column('mark_status_status_delete', __('svr.directory.item_status_delete'))->sortable();
+        $grid->column('mark_status_id', __('svr-directories-lang:directories.mark_statuses.mark_status_id'))->sortable();
+		$grid->column('mark_status_guid_self', __('svr-directories-lang:directories.guid_self'))->sortable();
+		$grid->column('mark_status_value_horriot', __('svr-directories-lang:directories.value_horriot'))->sortable();
+		$grid->column('mark_status_name', __('svr-directories-lang:directories.mark_statuses.mark_status_name'))->sortable();
+		$grid->column('mark_status_selex_code', __('svr-directories-lang:directories.selex_code'))->sortable();
+		$grid->column('mark_status_status', __('svr-directories-lang:directories.item_status'))->sortable();
+		$grid->column('mark_status_status_delete', __('svr-directories-lang:directories.item_status_delete'))->sortable();
 
 		$grid->disableCreateButton();
 		$grid->disableExport();
@@ -115,13 +115,13 @@ class MarkStatusesController extends AdminController
     protected function detail($id)
     {
         $show = new Show(DirectoryMarkStatuses::findOrFail($id));
-        $show->field('mark_status_id', __('svr.directory.mark_statuses.mark_status_id'));
-        $show->field('mark_status_guid_self', __('svr.directory.guid_self'));
-        $show->field('mark_status_value_horriot', __('svr.directory.value_horriot'));
-        $show->field('mark_status_name', __('svr.directory.mark_statuses.mark_status_name'));
-        $show->field('mark_status_selex_code', __('svr.directory.selex_code'));
-        $show->field('mark_status_status', __('svr.directory.item_status'));
-        $show->field('mark_status_status_delete', __('svr.directory.item_status_delete'));
+        $show->field('mark_status_id', __('svr-directories-lang:directories.mark_statuses.mark_status_id'));
+        $show->field('mark_status_guid_self', __('svr-directories-lang:directories.guid_self'));
+        $show->field('mark_status_value_horriot', __('svr-directories-lang:directories.value_horriot'));
+        $show->field('mark_status_name', __('svr-directories-lang:directories.mark_statuses.mark_status_name'));
+        $show->field('mark_status_selex_code', __('svr-directories-lang:directories.selex_code'));
+        $show->field('mark_status_status', __('svr-directories-lang:directories.item_status'));
+        $show->field('mark_status_status_delete', __('svr-directories-lang:directories.item_status_delete'));
 
         return $show;
     }
@@ -135,31 +135,31 @@ class MarkStatusesController extends AdminController
     {
         $form = new Form(new DirectoryMarkStatuses());
 
-		$form->text('mark_status_id', __('svr.directory.mark_statuses.mark_status_id'))
+		$form->text('mark_status_id', __('svr-directories-lang:directories.mark_statuses.mark_status_id'))
 			->readonly(true)
-			->help(__('svr.directory.mark_statuses.mark_status_id'));
-		$form->text('mark_status_guid_self', __('svr.directory.guid_self'))
-			->readonly(true)
-			->required()
-			->help(__('svr.directory.guid_self'));
-		$form->text('mark_status_value_horriot', __('svr.directory.value_horriot'))
+			->help(__('svr-directories-lang:directories.mark_statuses.mark_status_id'));
+		$form->text('mark_status_guid_self', __('svr-directories-lang:directories.guid_self'))
 			->readonly(true)
 			->required()
-			->help(__('svr.directory.value_horriot'));
-		$form->text('mark_status_name', __('svr.directory.mark_statuses.mark_status_name'))
+			->help(__('svr-directories-lang:directories.guid_self'));
+		$form->text('mark_status_value_horriot', __('svr-directories-lang:directories.value_horriot'))
+			->readonly(true)
 			->required()
-			->help(__('svr.directory.mark_statuses.mark_status_name'));
-		$form->text('mark_status_selex_code', __('svr.directory.selex_code'))
-			->help(__('svr.directory.selex_code'));
-		$form->select('mark_status_status', __('svr.directory.item_status'))
+			->help(__('svr-directories-lang:directories.value_horriot'));
+		$form->text('mark_status_name', __('svr-directories-lang:directories.mark_statuses.mark_status_name'))
+			->required()
+			->help(__('svr-directories-lang:directories.mark_statuses.mark_status_name'));
+		$form->text('mark_status_selex_code', __('svr-directories-lang:directories.selex_code'))
+			->help(__('svr-directories-lang:directories.selex_code'));
+		$form->select('mark_status_status', __('svr-directories-lang:directories.item_status'))
 			->options(SystemStatusEnum::get_option_list())
 			->default('enabled')->required();
-		$form->select('mark_status_status_delete', trans('svr.directory.item_status_delete'))
+		$form->select('mark_status_status_delete', trans('svr-directories-lang:directories.item_status_delete'))
 			->options(SystemStatusDeleteEnum::get_option_list())->default('active')
 			->readonly(true)->required();
 
-        $form->date('mark_status_created_at', __('svr.directory.created_at'));
-        $form->date('update_at', __('svr.directory.update_at'));
+        $form->date('created_at', __('svr-directories-lang:directories.created_at'));
+        $form->date('updated_at', __('svr-directories-lang:directories.updated_at'));
 
         // обработка формы
         $form->saving(function (Form $form)

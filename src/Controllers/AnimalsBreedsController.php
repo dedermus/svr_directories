@@ -183,8 +183,8 @@ class AnimalsBreedsController extends AdminController
 			->options(SystemStatusDeleteEnum::get_option_list())->default('active')
 			->readonly(true)->required();
 
-        $form->date('breed_created_at', __('svr-directories-lang:directories.created_at'));
-        $form->date('update_at', __('svr-directories-lang:directories.update_at'));
+        $form->date('created_at', __('svr-directories-lang:directories.created_at'));
+        $form->date('updated_at', __('svr-directories-lang:directories.updated_at'));
 
         // обработка формы
         $form->saving(function (Form $form)

@@ -2,7 +2,6 @@
 
 namespace Svr\Directories\Controllers;
 
-use App\Models\Directory\DirectoryAnimalsSpecies;
 use OpenAdminCore\Admin\Facades\Admin;
 use OpenAdminCore\Admin\Controllers\AdminController;
 use OpenAdminCore\Admin\Form;
@@ -11,6 +10,7 @@ use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
+use Svr\Directories\Model\DirectoryAnimalsSpecies;
 
 class AnimalsSpeciesController extends AdminController
 {
@@ -22,8 +22,8 @@ class AnimalsSpeciesController extends AdminController
     public function index(Content $content)
     {
         return Admin::content(function (Content $content) {
-            $content->header(trans('svr.directory.animals_species.title'));
-            $content->description(trans('svr.directory.animals_species.description'));
+            $content->header(trans('svr-directories-lang:directories.animals_species.title'));
+            $content->description(trans('svr-directories-lang:directories.animals_species.description'));
             $content->body($this->grid());
         });
     }
@@ -36,8 +36,8 @@ class AnimalsSpeciesController extends AdminController
     public function create(Content $content)
     {
         return Admin::content(function (Content $content) {
-            $content->header(trans('svr.directory.animals_species.title'));
-            $content->description(trans('svr.directory.animals_species.create'));
+            $content->header(trans('svr-directories-lang:directories.animals_species.title'));
+            $content->description(trans('svr-directories-lang:directories.animals_species.create'));
             $content->body($this->form());
         });
     }
@@ -50,13 +50,11 @@ class AnimalsSpeciesController extends AdminController
      *
      * @return Content
      */
-    public function edit($id, Content $content)
+    public function edit($id, Content $content): Content
     {
-		//dd($this->form()->edit($id));
-
         return $content
-            ->title(trans('svr.directory.animals_species.title'))
-            ->description(trans('svr.directory.animals_species.edit'))
+            ->title(trans('svr-directories-lang:directories.animals_species.title'))
+            ->description(trans('svr-directories-lang:directories.animals_species.edit'))
             ->row($this->form()->edit($id));
     }
 
@@ -68,11 +66,11 @@ class AnimalsSpeciesController extends AdminController
      *
      * @return Content
      */
-    public function show($id, Content $content)
+    public function show($id, Content $content): Content
     {
 		return $content
-			->title(__('svr.directory.animals_species.title'))
-			->description(__('svr.directory.animals_species.description'))
+			->title(__('svr-directories-lang:directories.animals_species.title'))
+			->description(__('svr-directories-lang:directories.animals_species.description'))
 			->body($this->detail($id));
     }
 
@@ -91,14 +89,14 @@ class AnimalsSpeciesController extends AdminController
     protected function grid(): Grid
     {
         $grid = new Grid(new DirectoryAnimalsSpecies());
-        $grid->column('specie_id', __('svr.directory.animals_species.specie_id'))->sortable();
-		$grid->column('specie_guid_self', __('svr.directory.guid_self'))->sortable();
-		$grid->column('specie_guid_horriot', __('svr.directory.guid_horriot'))->sortable();
-		$grid->column('specie_uuid_horriot', __('svr.directory.uuid_horriot'))->sortable();
-		$grid->column('specie_name', __('svr.directory.animals_species.specie_name'))->sortable();
-		$grid->column('specie_selex_code', __('svr.directory.selex_code'))->sortable();
-		$grid->column('specie_status', __('svr.directory.item_status'))->sortable();
-		$grid->column('specie_status_delete', __('svr.directory.item_status_delete'))->sortable();
+        $grid->column('specie_id', __('svr-directories-lang:directories.animals_species.specie_id'))->sortable();
+		$grid->column('specie_guid_self', __('svr-directories-lang:directories.guid_self'))->sortable();
+		$grid->column('specie_guid_horriot', __('svr-directories-lang:directories.guid_horriot'))->sortable();
+		$grid->column('specie_uuid_horriot', __('svr-directories-lang:directories.uuid_horriot'))->sortable();
+		$grid->column('specie_name', __('svr-directories-lang:directories.animals_species.specie_name'))->sortable();
+		$grid->column('specie_selex_code', __('svr-directories-lang:directories.selex_code'))->sortable();
+		$grid->column('specie_status', __('svr-directories-lang:directories.item_status'))->sortable();
+		$grid->column('specie_status_delete', __('svr-directories-lang:directories.item_status_delete'))->sortable();
 
 		$grid->disableCreateButton();
 		$grid->disableExport();
@@ -113,17 +111,17 @@ class AnimalsSpeciesController extends AdminController
      *
      * @return Show
      */
-    protected function detail($id)
+    protected function detail($id): Show
     {
         $show = new Show(DirectoryAnimalsSpecies::findOrFail($id));
-        $show->field('specie_id', __('svr.directory.animals_species.specie_id'));
-        $show->field('specie_guid_self', __('svr.directory.guid_self'));
-        $show->field('specie_guid_horriot', __('svr.directory.guid_horriot'));
-        $show->field('specie_uuid_horriot', __('svr.directory.uuid_horriot'));
-        $show->field('specie_name', __('svr.directory.animals_species.specie_name'));
-        $show->field('specie_selex_code', __('svr.directory.selex_code'));
-        $show->field('specie_status', __('svr.directory.item_status'));
-        $show->field('specie_status_delete', __('svr.directory.item_status_delete'));
+        $show->field('specie_id', __('svr-directories-lang:directories.animals_species.specie_id'));
+        $show->field('specie_guid_self', __('svr-directories-lang:directories.guid_self'));
+        $show->field('specie_guid_horriot', __('svr-directories-lang:directories.guid_horriot'));
+        $show->field('specie_uuid_horriot', __('svr-directories-lang:directories.uuid_horriot'));
+        $show->field('specie_name', __('svr-directories-lang:directories.animals_species.specie_name'));
+        $show->field('specie_selex_code', __('svr-directories-lang:directories.selex_code'));
+        $show->field('specie_status', __('svr-directories-lang:directories.item_status'));
+        $show->field('specie_status_delete', __('svr-directories-lang:directories.item_status_delete'));
 
         return $show;
     }
@@ -137,35 +135,35 @@ class AnimalsSpeciesController extends AdminController
     {
         $form = new Form(new DirectoryAnimalsSpecies());
 
-		$form->text('specie_id', __('svr.directory.animals_species.specie_id'))
+		$form->text('specie_id', __('svr-directories-lang:directories.animals_species.specie_id'))
 			->readonly(true)
-			->help(__('svr.directory.animals_species.specie_id'));
-		$form->text('specie_guid_self', __('svr.directory.guid_self'))
-			->readonly(true)
-			->required()
-			->help(__('svr.directory.guid_self'));
-		$form->text('specie_guid_horriot', __('svr.directory.guid_horriot'))
+			->help(__('svr-directories-lang:directories.animals_species.specie_id'));
+		$form->text('specie_guid_self', __('svr-directories-lang:directories.guid_self'))
 			->readonly(true)
 			->required()
-			->help(__('svr.directory.guid_horriot'));
-		$form->text('specie_uuid_horriot', __('svr.directory.uuid_horriot'))
+			->help(__('svr-directories-lang:directories.guid_self'));
+		$form->text('specie_guid_horriot', __('svr-directories-lang:directories.guid_horriot'))
 			->readonly(true)
 			->required()
-			->help(__('svr.directory.uuid_horriot'));
-		$form->text('specie_name', __('svr.directory.animals_species.specie_name'))
+			->help(__('svr-directories-lang:directories.guid_horriot'));
+		$form->text('specie_uuid_horriot', __('svr-directories-lang:directories.uuid_horriot'))
+			->readonly(true)
 			->required()
-			->help(__('svr.directory.animals_species.specie_name'));
-		$form->text('specie_selex_code', __('svr.directory.selex_code'))
-			->help(__('svr.directory.selex_code'));
-		$form->select('specie_status', __('svr.directory.item_status'))
+			->help(__('svr-directories-lang:directories.uuid_horriot'));
+		$form->text('specie_name', __('svr-directories-lang:directories.animals_species.specie_name'))
+			->required()
+			->help(__('svr-directories-lang:directories.animals_species.specie_name'));
+		$form->text('specie_selex_code', __('svr-directories-lang:directories.selex_code'))
+			->help(__('svr-directories-lang:directories.selex_code'));
+		$form->select('specie_status', __('svr-directories-lang:directories.item_status'))
 			->options(SystemStatusEnum::get_option_list())
 			->default('enabled')->required();
-		$form->select('specie_status_delete', trans('svr.directory.item_status_delete'))
+		$form->select('specie_status_delete', trans('svr-directories-lang:directories.item_status_delete'))
 			->options(SystemStatusDeleteEnum::get_option_list())->default('active')
 			->readonly(true)->required();
 
-        $form->date('specie_created_at', __('svr.directory.created_at'));
-        $form->date('update_at', __('svr.directory.update_at'));
+        $form->date('created_at', __('svr-directories-lang:directories.created_at'));
+        $form->date('updated_at', __('svr-directories-lang:directories.updated_at'));
 
         // обработка формы
         $form->saving(function (Form $form)

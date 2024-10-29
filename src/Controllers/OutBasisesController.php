@@ -2,7 +2,6 @@
 
 namespace Svr\Directories\Controllers;
 
-use App\Models\Directory\DirectoryOutBasises;
 use OpenAdminCore\Admin\Facades\Admin;
 use OpenAdminCore\Admin\Controllers\AdminController;
 use OpenAdminCore\Admin\Form;
@@ -11,7 +10,7 @@ use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
-
+use Svr\Directories\Model\DirectoryOutBasises;
 
 class OutBasisesController extends AdminController
 {
@@ -23,8 +22,8 @@ class OutBasisesController extends AdminController
     public function index(Content $content)
     {
         return Admin::content(function (Content $content) {
-            $content->header(trans('svr.directory.out_basises.title'));
-            $content->description(trans('svr.directory.out_basises.description'));
+            $content->header(trans('svr-directories-lang:directories.out_basises.title'));
+            $content->description(trans('svr-directories-lang:directories.out_basises.description'));
             $content->body($this->grid());
         });
     }
@@ -37,8 +36,8 @@ class OutBasisesController extends AdminController
     public function create(Content $content)
     {
         return Admin::content(function (Content $content) {
-            $content->header(trans('svr.directory.out_basises.title'));
-            $content->description(trans('svr.directory.out_basises.create'));
+            $content->header(trans('svr-directories-lang:directories.out_basises.title'));
+            $content->description(trans('svr-directories-lang:directories.out_basises.create'));
             $content->body($this->form());
         });
     }
@@ -53,11 +52,9 @@ class OutBasisesController extends AdminController
      */
     public function edit($id, Content $content)
     {
-		//dd($this->form()->edit($id));
-
         return $content
-            ->title(trans('svr.directory.out_basises.title'))
-            ->description(trans('svr.directory.out_basises.edit'))
+            ->title(trans('svr-directories-lang:directories.out_basises.title'))
+            ->description(trans('svr-directories-lang:directories.out_basises.edit'))
             ->row($this->form()->edit($id));
     }
 
@@ -72,8 +69,8 @@ class OutBasisesController extends AdminController
     public function show($id, Content $content)
     {
 		return $content
-			->title(__('svr.directory.out_basises.title'))
-			->description(__('svr.directory.out_basises.description'))
+			->title(__('svr-directories-lang:directories.out_basises.title'))
+			->description(__('svr-directories-lang:directories.out_basises.description'))
 			->body($this->detail($id));
     }
 
@@ -92,13 +89,13 @@ class OutBasisesController extends AdminController
     protected function grid(): Grid
     {
         $grid = new Grid(new DirectoryOutBasises());
-        $grid->column('out_basis_id', __('svr.directory.out_basises.out_basis_id'))->sortable();
-		$grid->column('out_basis_guid_self', __('svr.directory.guid_self'))->sortable();
-		$grid->column('out_basis_value_horriot', __('svr.directory.value_horriot'))->sortable();
-		$grid->column('out_basis_name', __('svr.directory.out_basises.out_basis_name'))->sortable();
-		$grid->column('out_basis_selex_code', __('svr.directory.selex_code'))->sortable();
-		$grid->column('out_basis_status', __('svr.directory.item_status'))->sortable();
-		$grid->column('out_basis_status_delete', __('svr.directory.item_status_delete'))->sortable();
+        $grid->column('out_basis_id', __('svr-directories-lang:directories.out_basises.out_basis_id'))->sortable();
+		$grid->column('out_basis_guid_self', __('svr-directories-lang:directories.guid_self'))->sortable();
+		$grid->column('out_basis_value_horriot', __('svr-directories-lang:directories.value_horriot'))->sortable();
+		$grid->column('out_basis_name', __('svr-directories-lang:directories.out_basises.out_basis_name'))->sortable();
+		$grid->column('out_basis_selex_code', __('svr-directories-lang:directories.selex_code'))->sortable();
+		$grid->column('out_basis_status', __('svr-directories-lang:directories.item_status'))->sortable();
+		$grid->column('out_basis_status_delete', __('svr-directories-lang:directories.item_status_delete'))->sortable();
 
 		$grid->disableCreateButton();
 		$grid->disableExport();
@@ -116,13 +113,13 @@ class OutBasisesController extends AdminController
     protected function detail($id)
     {
         $show = new Show(DirectoryOutBasises::findOrFail($id));
-        $show->field('out_basis_id', __('svr.directory.out_basises.out_basis_id'));
-        $show->field('out_basis_guid_self', __('svr.directory.guid_self'));
-        $show->field('out_basis_value_horriot', __('svr.directory.value_horriot'));
-        $show->field('out_basis_name', __('svr.directory.animals_species.specie_name'));
-        $show->field('out_basis_selex_code', __('svr.directory.selex_code'));
-        $show->field('out_basis_status', __('svr.directory.item_status'));
-        $show->field('out_basis_status_delete', __('svr.directory.item_status_delete'));
+        $show->field('out_basis_id', __('svr-directories-lang:directories.out_basises.out_basis_id'));
+        $show->field('out_basis_guid_self', __('svr-directories-lang:directories.guid_self'));
+        $show->field('out_basis_value_horriot', __('svr-directories-lang:directories.value_horriot'));
+        $show->field('out_basis_name', __('svr-directories-lang:directories.animals_species.specie_name'));
+        $show->field('out_basis_selex_code', __('svr-directories-lang:directories.selex_code'));
+        $show->field('out_basis_status', __('svr-directories-lang:directories.item_status'));
+        $show->field('out_basis_status_delete', __('svr-directories-lang:directories.item_status_delete'));
 
         return $show;
     }
@@ -136,31 +133,31 @@ class OutBasisesController extends AdminController
     {
         $form = new Form(new DirectoryOutBasises());
 
-		$form->text('out_basis_id', __('svr.directory.out_basises.out_basis_id'))
+		$form->text('out_basis_id', __('svr-directories-lang:directories.out_basises.out_basis_id'))
 			->readonly(true)
-			->help(__('svr.directory.out_basises.out_basis_id'));
-		$form->text('out_basis_guid_self', __('svr.directory.guid_self'))
-			->readonly(true)
-			->required()
-			->help(__('svr.directory.guid_self'));
-		$form->text('out_basis_value_horriot', __('svr.directory.value_horriot'))
+			->help(__('svr-directories-lang:directories.out_basises.out_basis_id'));
+		$form->text('out_basis_guid_self', __('svr-directories-lang:directories.guid_self'))
 			->readonly(true)
 			->required()
-			->help(__('svr.directory.value_horriot'));
-		$form->text('out_basis_name', __('svr.directory.out_basises.out_basis_name'))
+			->help(__('svr-directories-lang:directories.guid_self'));
+		$form->text('out_basis_value_horriot', __('svr-directories-lang:directories.value_horriot'))
+			->readonly(true)
 			->required()
-			->help(__('svr.directory.out_basises.out_basis_name'));
-		$form->text('out_basis_selex_code', __('svr.directory.selex_code'))
-			->help(__('svr.directory.selex_code'));
-		$form->select('out_basis_status', __('svr.directory.item_status'))
+			->help(__('svr-directories-lang:directories.value_horriot'));
+		$form->text('out_basis_name', __('svr-directories-lang:directories.out_basises.out_basis_name'))
+			->required()
+			->help(__('svr-directories-lang:directories.out_basises.out_basis_name'));
+		$form->text('out_basis_selex_code', __('svr-directories-lang:directories.selex_code'))
+			->help(__('svr-directories-lang:directories.selex_code'));
+		$form->select('out_basis_status', __('svr-directories-lang:directories.item_status'))
 			->options(SystemStatusEnum::get_option_list())
 			->default('enabled')->required();
-		$form->select('out_basis_status_delete', trans('svr.directory.item_status_delete'))
+		$form->select('out_basis_status_delete', trans('svr-directories-lang:directories.item_status_delete'))
 			->options(SystemStatusDeleteEnum::get_option_list())->default('active')
 			->readonly(true)->required();
 
-        $form->date('out_basis_created_at', __('svr.directory.created_at'));
-        $form->date('update_at', __('svr.directory.update_at'));
+        $form->date('created_at', __('svr-directories-lang:directories.created_at'));
+        $form->date('updated_at', __('svr-directories-lang:directories.updated_at'));
 
         // обработка формы
         $form->saving(function (Form $form)

@@ -2,9 +2,6 @@
 
 namespace Svr\Directories\Controllers;
 
-use App\Models\Directories\DirectoryCountriesRegion;
-use App\Models\Directories\DirectoryCountriesRegionsDistrict;
-use App\Models\Directories\DirectoryCountry;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
 use Illuminate\Support\Facades\Schema;
@@ -14,6 +11,9 @@ use OpenAdminCore\Admin\Form;
 use OpenAdminCore\Admin\Grid;
 use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
+use Svr\Directories\Model\DirectoryCountriesRegion;
+use Svr\Directories\Model\DirectoryCountriesRegionsDistrict;
+use Svr\Directories\Model\DirectoryCountry;
 
 class DistrictController extends AdminController
 {
