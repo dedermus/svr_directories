@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Directory;
+namespace Svr\Directories\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,32 +25,17 @@ class DirectoryMarkStatuses extends Model
 
 
 	/**
-	 * Флаг наличия автообновляемых полей
-	 * @var string
-	 */
-//	public $timestamps								= false;
-
-
-	/**
 	 * Поле даты создания строки
 	 * @var string
 	 */
-	const CREATED_AT								= 'mark_status_created_at';
+	const CREATED_AT								= 'created_at';
 
 
 	/**
 	 * Поле даты обновления строки
 	 * @var string
 	 */
-	const UPDATED_AT								= 'update_at';
-
-
-	/**
-	 * На случай, если потребуется указать специфичное подключение для таблицы
-	 * @var string
-	 */
-//	protected $connection							= 'mysql';
-
+	const UPDATED_AT								= 'updated_at';
 
 	/**
 	 * Значения полей по умолчанию
@@ -67,15 +52,15 @@ class DirectoryMarkStatuses extends Model
 	 * @var array
 	 */
 	protected $fillable								= [
-		'mark_status_id',							//* Идентификатор видов маркирования
-		'mark_status_guid_self',					//* GUID (внутренний) видов маркирования
-		'mark_status_name ',						//* Наименование видов маркирования
-		'mark_status_value_horriot',				//* Значение для хорриота видов маркирования
-		'mark_status_selex_code',					//* Код видов маркирования в Селэксе
-		'mark_status_status',						//* Статус
-		'mark_status_status_delete',				//* Статус удаления
-		'mark_status_created_at',					//* Дата создания
-		'update_at',								//* Дата обновления
+		'mark_status_id',							// Идентификатор видов маркирования
+		'mark_status_guid_self',					// GUID (внутренний) видов маркирования
+		'mark_status_name ',						// Наименование видов маркирования
+		'mark_status_value_horriot',				// Значение для хорриота видов маркирования
+		'mark_status_selex_code',					// Код видов маркирования в Селэксе
+		'mark_status_status',						// Статус
+		'mark_status_status_delete',				// Статус удаления
+		'created_at',					            // Дата создания
+		'updated_at',								// Дата обновления
 	];
 
 

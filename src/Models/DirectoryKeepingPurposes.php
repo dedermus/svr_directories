@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Directory;
+namespace Svr\Directories\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,14 +35,14 @@ class DirectoryKeepingPurposes extends Model
 	 * Поле даты создания строки
 	 * @var string
 	 */
-	const CREATED_AT								= 'keeping_purpose_created_at';
+	const CREATED_AT								= 'created_at';
 
 
 	/**
 	 * Поле даты обновления строки
 	 * @var string
 	 */
-	const UPDATED_AT								= 'update_at';
+	const UPDATED_AT								= 'updated_at';
 
 
 	/**
@@ -67,16 +67,16 @@ class DirectoryKeepingPurposes extends Model
 	 * @var array
 	 */
 	protected $fillable								= [
-		'keeping_purpose_id',						//* Идентификатор целей содержания животных
-		'keeping_purpose_guid_self',				//* GUID (внутренний) целей содержания животных
-		'keeping_purpose_guid_horriot',				//* GUID (хорриота) целей содержания животных
-		'keeping_purpose_uuid_horriot',				//* UUID (хорриота) целей содержания животных
-		'keeping_purpose_name',						//* Наименование целей содержания животных
-		'keeping_purpose_selex_code',				//* Код целей содержания животных в Селэксе
-		'keeping_purpose_status',					//* Статус
-		'keeping_purpose_status_delete',			//* Статус удаления
-		'keeping_purpose_created_at',				//* Дата создания
-		'update_at',								//* Дата обновления
+		'keeping_purpose_id',						// Идентификатор целей содержания животных
+		'keeping_purpose_guid_self',				// GUID (внутренний) целей содержания животных
+		'keeping_purpose_guid_horriot',				// GUID (хорриота) целей содержания животных
+		'keeping_purpose_uuid_horriot',				// UUID (хорриота) целей содержания животных
+		'keeping_purpose_name',						// Наименование целей содержания животных
+		'keeping_purpose_selex_code',				// Код целей содержания животных в Селэксе
+		'keeping_purpose_status',					// Статус
+		'keeping_purpose_status_delete',			// Статус удаления
+		'created_at',				                // Дата создания
+		'updated_at',								// Дата обновления
 	];
 
 
@@ -94,7 +94,7 @@ class DirectoryKeepingPurposes extends Model
 	 * @var array
 	 */
 	protected $hidden								= [
-		'keeping_purpose_created_at',
+		'created_at',
 	];
 
 

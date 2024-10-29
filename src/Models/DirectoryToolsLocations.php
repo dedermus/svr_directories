@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Directory;
+namespace Svr\Directories\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,14 +35,14 @@ class DirectoryToolsLocations extends Model
 	 * Поле даты создания строки
 	 * @var string
 	 */
-	const CREATED_AT								= 'tool_location_created_at';
+	const CREATED_AT								= 'created_at';
 
 
 	/**
 	 * Поле даты обновления строки
 	 * @var string
 	 */
-	const UPDATED_AT								= 'update_at';
+	const UPDATED_AT								= 'updated_at';
 
 
 	/**
@@ -67,16 +67,16 @@ class DirectoryToolsLocations extends Model
 	 * @var array
 	 */
 	protected $fillable								= [
-		'tool_location_id',							//* Идентификатор места нанесения маркировки животного
-		'tool_location_guid_self',					//* GUID (наш, внутренний) места нанесения маркировки животного
-		'tool_location_guid_horriot',				//* GUID (хорриота) места нанесения маркировки животного
-		'tool_location_uuid_horriot',				//* UUID (хорриота) места нанесения маркировки животного
-		'tool_location_name',						//* Наименование места нанесения маркировки животного
-		'tool_location_selex_code',					//* Код места нанесения маркировки животного в Селэксе
-		'tool_location_status',						//* Статус
-		'tool_location_status_delete',				//* Статус удаления
-		'tool_location_created_at',					//* Дата создания
-		'update_at',								//* Дата обновления
+		'tool_location_id',							// Идентификатор места нанесения маркировки животного
+		'tool_location_guid_self',					// GUID (наш, внутренний) места нанесения маркировки животного
+		'tool_location_guid_horriot',				// GUID (хорриота) места нанесения маркировки животного
+		'tool_location_uuid_horriot',				// UUID (хорриота) места нанесения маркировки животного
+		'tool_location_name',						// Наименование места нанесения маркировки животного
+		'tool_location_selex_code',					// Код места нанесения маркировки животного в Селэксе
+		'tool_location_status',						// Статус
+		'tool_location_status_delete',				// Статус удаления
+		'created_at',					            // Дата создания
+		'updated_at',								// Дата обновления
 	];
 
 

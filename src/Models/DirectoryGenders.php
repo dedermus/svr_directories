@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Directory;
+namespace Svr\Directories\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,14 +35,14 @@ class DirectoryGenders extends Model
 	 * Поле даты создания строки
 	 * @var string
 	 */
-	const CREATED_AT								= 'gender_created_at';
+	const CREATED_AT								= 'created_at';
 
 
 	/**
 	 * Поле даты обновления строки
 	 * @var string
 	 */
-	const UPDATED_AT								= 'update_at';
+	const UPDATED_AT								= 'updated_at';
 
 
 	/**
@@ -67,15 +67,15 @@ class DirectoryGenders extends Model
 	 * @var array
 	 */
 	protected $fillable								= [
-		'gender_id ',								//* Идентификатор полов животного
-		'gender_guid_self',							//* GUID (внутренний) полов животного
-		'gender_name',								//* Наименование полов животного
-		'gender_value_horriot',						//* Значение для хорриота полов животного
-		'gender_selex_code',						//* Код полов животного в Селэксе
-		'gender_status',							//* Статус полов животного
-		'gender_status_delete',						//* Статус удаления полов животного
-		'gender_created_at',						//* Дата создания
-		'update_at',								//* Дата обновления
+		'gender_id ',								// Идентификатор полов животного
+		'gender_guid_self',							// GUID (внутренний) полов животного
+		'gender_name',								// Наименование полов животного
+		'gender_value_horriot',						// Значение для хорриота полов животного
+		'gender_selex_code',						// Код полов животного в Селэксе
+		'gender_status',							// Статус полов животного
+		'gender_status_delete',						// Статус удаления полов животного
+		'created_at',						        // Дата создания
+		'updated_at',								// Дата обновления
 	];
 
 
@@ -93,7 +93,7 @@ class DirectoryGenders extends Model
 	 * @var array
 	 */
 	protected $hidden								= [
-		'gender_created_at',
+		'created_at',
 	];
 
 

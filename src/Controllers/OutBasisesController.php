@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Admin\Controllers\Directory;
-
+namespace Svr\Directories\Controllers;
 
 use App\Models\Directory\DirectoryOutBasises;
 use OpenAdminCore\Admin\Facades\Admin;

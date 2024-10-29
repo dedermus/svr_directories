@@ -2,6 +2,7 @@
 
 namespace Svr\Directories;
 
+use App\Admin\Controllers\Directory\AnimalsBreedsController;
 use Svr\Directories\Controllers\LogsHerriotController;
 use Svr\Directories\Controllers\LogsUsersController;
 use OpenAdminCore\Admin\Admin;
@@ -32,6 +33,13 @@ class DirectoriesManager extends Extension
     {
         parent::routes(function ($router) {
             /* @var \Illuminate\Routing\Router $router */
+
+            $router->resource('directories/animals_breeds', AnimalsBreedsController::class);
+
+
+
+
+
 
             $router->resource('svr/logs_herriot', LogsHerriotController::class);
             $router->resource('svr/logs_users', LogsUsersController::class);

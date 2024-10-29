@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Directory;
+namespace Svr\Directories\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,34 +23,24 @@ class DirectoryAnimalsBreeds extends Model
 	 */
 	protected $primaryKey							= 'breed_id';
 
-
-	/**
-	 * Флаг наличия автообновляемых полей
-	 * @var string
-	 */
-//	public $timestamps								= false;
+    /**
+     * @var bool
+     */
+    public $timestamps = true;
 
 
 	/**
 	 * Поле даты создания строки
 	 * @var string
 	 */
-	const CREATED_AT								= 'breed_created_at';
+	const CREATED_AT								= 'created_at';
 
 
 	/**
 	 * Поле даты обновления строки
 	 * @var string
 	 */
-	const UPDATED_AT								= 'update_at';
-
-
-	/**
-	 * На случай, если потребуется указать специфичное подключение для таблицы
-	 * @var string
-	 */
-//	protected $connection							= 'mysql';
-
+	const UPDATED_AT								= 'updated_at';
 
 	/**
 	 * Значения полей по умолчанию
@@ -67,17 +57,17 @@ class DirectoryAnimalsBreeds extends Model
 	 * @var array
 	 */
 	protected $fillable								= [
-		'breed_id',									//* Идентификатор породы животных
-		'specie_id',								//* Идентификатор вида животных
-		'breed_guid_self',							//* GUID (наш, внутренний) породы животных
-		'breed_guid_horriot',						//* GUID (хорриота) породы животных
-		'breed_uuid_horriot',						//* UUID (хорриота) породы животных
-		'breed_name',								//* Наименование породы животных
-		'breed_selex_code',							//* Код породы животных  в Селэксе
-		'breed_status',								//* Статус породы животных
-		'breed_status_delete',						//* Статус удаления породы животных
-		'breed_created_at',							//* Дата создания породы животных
-		'update_at',								//* дата последнего изменения строки записи */
+		'breed_id',									// Идентификатор породы животных
+		'specie_id',								// Идентификатор вида животных
+		'breed_guid_self',							// GUID (наш, внутренний) породы животных
+		'breed_guid_horriot',						// GUID (хорриота) породы животных
+		'breed_uuid_horriot',						// UUID (хорриота) породы животных
+		'breed_name',								// Наименование породы животных
+		'breed_selex_code',							// Код породы животных  в Селэксе
+		'breed_status',								// Статус породы животных
+		'breed_status_delete',						// Статус удаления породы животных
+		'created_at',							    // Дата создания породы животных
+		'updated_at',								// дата последнего изменения строки записи */
 	];
 
 
@@ -95,9 +85,15 @@ class DirectoryAnimalsBreeds extends Model
 	 * @var array
 	 */
 	protected $hidden								= [
-		'breed_created_at',
+		'created_at',
 	];
 
+    /**
+     * Формат хранения столбцов даты модели.
+     *
+     * @var string
+     */
+    protected $dateFormat = 'Y-m-d H:i:s';
 
 	/**
 	 * Вид животного
@@ -106,19 +102,6 @@ class DirectoryAnimalsBreeds extends Model
 	public function specie()
 	{
 		return $this->belongsTo(DirectoryAnimalsSpecies::class, 'specie_id', 'specie_id');
-	}
-
-
-	/**
-	 * Преобразование полей при чтении/записи
-	 * @return array
-	 */
-	protected function casts(): array
-	{
-		return [
-//			'update_at'								=> 'timestamp',
-//			'breed_created_at'						=> 'timestamp',
-		];
 	}
 
     /**

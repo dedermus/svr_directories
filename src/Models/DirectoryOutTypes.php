@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Directory;
+namespace Svr\Directories\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,14 +35,14 @@ class DirectoryOutTypes extends Model
 	 * Поле даты создания строки
 	 * @var string
 	 */
-	const CREATED_AT								= 'out_type_created_at';
+	const CREATED_AT								= 'created_at';
 
 
 	/**
 	 * Поле даты обновления строки
 	 * @var string
 	 */
-	const UPDATED_AT								= 'update_at';
+	const UPDATED_AT								= 'updated_at';
 
 
 	/**
@@ -67,15 +67,15 @@ class DirectoryOutTypes extends Model
 	 * @var array
 	 */
 	protected $fillable								= [
-		'out_type_id',								//* Идентификатор расходов
-		'out_type_guid_self',						//* GUID (внутренний) расходов
-		'out_type_name',							//* Наименование расходов
-		'out_type_value_horriot',					//* Значение для хорриота расходов
-		'out_type_selex_code',						//* Код расходов в Селэксе
-		'out_type_status',							//* Статус
-		'out_type_status_delete',					//* Статус удаления
-		'out_type_created_at',						//* Дата создания
-		'update_at',								//* Дата обновления
+		'out_type_id',								// Идентификатор расходов
+		'out_type_guid_self',						// GUID (внутренний) расходов
+		'out_type_name',							// Наименование расходов
+		'out_type_value_horriot',					// Значение для хорриота расходов
+		'out_type_selex_code',						// Код расходов в Селэксе
+		'out_type_status',							// Статус
+		'out_type_status_delete',					// Статус удаления
+		'created_at',						        // Дата создания
+		'updated_at',								// Дата обновления
 	];
 
 
@@ -93,7 +93,7 @@ class DirectoryOutTypes extends Model
 	 * @var array
 	 */
 	protected $hidden								= [
-		'out_type_created_at',
+		'created_at',
 	];
 
 

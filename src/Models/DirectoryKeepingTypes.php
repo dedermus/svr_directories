@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Directory;
+namespace Svr\Directories\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,34 +23,17 @@ class DirectoryKeepingTypes extends Model
 	 */
 	protected $primaryKey							= 'keeping_type_id';
 
-
-	/**
-	 * Флаг наличия автообновляемых полей
-	 * @var string
-	 */
-//	public $timestamps								= false;
-
-
 	/**
 	 * Поле даты создания строки
 	 * @var string
 	 */
-	const CREATED_AT								= 'keeping_type_created_at';
-
+	const CREATED_AT								= 'created_at';
 
 	/**
 	 * Поле даты обновления строки
 	 * @var string
 	 */
-	const UPDATED_AT								= 'update_at';
-
-
-	/**
-	 * На случай, если потребуется указать специфичное подключение для таблицы
-	 * @var string
-	 */
-//	protected $connection							= 'mysql';
-
+	const UPDATED_AT								= 'updated_at';
 
 	/**
 	 * Значения полей по умолчанию
@@ -67,17 +50,17 @@ class DirectoryKeepingTypes extends Model
 	 * @var array
 	 */
 	protected $fillable								= [
-		'keeping_type_id',							//* Идентификатор типов содержания животного
-		'specie_id',								//* Идентификатор видов животных
-		'keeping_type_guid_self',					//* GUID (внутренний) типов содержания животного
-		'keeping_type_guid_horriot',				//* GUID (хорриота) типов содержания животного
-		'keeping_type_uuid_horriot	',				//* UUID (хорриота) типов содержания животного
-		'keeping_type_name',						//* Наименование типов содержания животного
-		'keeping_type_selex_code',					//* Код типов содержания животного в Селэксе
-		'keeping_type_status',						//* Статус
-		'keeping_type_status_delete',				//* Статус удаления
-		'keeping_type_created_at',					//* Дата создания
-		'update_at',								//* Дата обновления
+		'keeping_type_id',							// Идентификатор типов содержания животного
+		'specie_id',								// Идентификатор видов животных
+		'keeping_type_guid_self',					// GUID (внутренний) типов содержания животного
+		'keeping_type_guid_horriot',				// GUID (хорриота) типов содержания животного
+		'keeping_type_uuid_horriot	',				// UUID (хорриота) типов содержания животного
+		'keeping_type_name',						// Наименование типов содержания животного
+		'keeping_type_selex_code',					// Код типов содержания животного в Селэксе
+		'keeping_type_status',						// Статус
+		'keeping_type_status_delete',				// Статус удаления
+		'created_at',					            // Дата создания
+		'updated_at',								// Дата обновления
 	];
 
 
@@ -95,7 +78,7 @@ class DirectoryKeepingTypes extends Model
 	 * @var array
 	 */
 	protected $hidden								= [
-		'keeping_type_created_at',
+		'created_at',
 	];
 
 

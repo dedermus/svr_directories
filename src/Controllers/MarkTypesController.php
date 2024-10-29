@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Admin\Controllers\Directory;
-
+namespace Svr\Directories\Controllers;
 
 use App\Models\Directory\DirectoryMarkTypes;
 use OpenAdminCore\Admin\Facades\Admin;
@@ -12,7 +11,6 @@ use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
-
 
 class MarkTypesController extends AdminController
 {

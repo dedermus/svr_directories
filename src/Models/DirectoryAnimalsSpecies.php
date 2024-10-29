@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Directory;
+namespace Svr\Directories\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,33 +23,18 @@ class DirectoryAnimalsSpecies extends Model
 	 */
 	protected $primaryKey							= 'specie_id';
 
-
-	/**
-	 * Флаг наличия автообновляемых полей
-	 * @var string
-	 */
-//	public $timestamps								= false;
-
-
 	/**
 	 * Поле даты создания строки
 	 * @var string
 	 */
-	const CREATED_AT								= 'specie_created_at';
+	const CREATED_AT								= 'created_at';
 
 
 	/**
 	 * Поле даты обновления строки
 	 * @var string
 	 */
-	const UPDATED_AT								= 'update_at';
-
-
-	/**
-	 * На случай, если потребуется указать специфичное подключение для таблицы
-	 * @var string
-	 */
-//	protected $connection							= 'mysql';
+	const UPDATED_AT								= 'updated_at';
 
 
 	/**
@@ -67,16 +52,16 @@ class DirectoryAnimalsSpecies extends Model
 	 * @var array
 	 */
 	protected $fillable								= [
-		'specie_id',								//* Идентификатор видов животных
-		'specie_guid_self',							//* GUID (внутренний) видов животных
-		'specie_guid_horriot',						//* GUID (хорриота) видов животных
-		'specie_uuid_horriot',						//* UUID (хорриота) видов животных
-		'specie_name',								//* Наименование видов животных
-		'specie_selex_code',						//* Код видов животных  в Селэксе
-		'specie_status',							//* Статус записи видов животных
-		'specie_status_delete',						//* Статус удаления видов животных
-		'specie_created_at',						//* Дата создания видов животных
-		'update_at',								//* Дата обновления видов животных
+		'specie_id',								// Идентификатор видов животных
+		'specie_guid_self',							// GUID (внутренний) видов животных
+		'specie_guid_horriot',						// GUID (хорриота) видов животных
+		'specie_uuid_horriot',						// UUID (хорриота) видов животных
+		'specie_name',								// Наименование видов животных
+		'specie_selex_code',						// Код видов животных  в Селэксе
+		'specie_status',							// Статус записи видов животных
+		'specie_status_delete',						// Статус удаления видов животных
+		'created_at',						        // Дата создания видов животных
+		'updated_at',								// Дата обновления видов животных
 	];
 
 

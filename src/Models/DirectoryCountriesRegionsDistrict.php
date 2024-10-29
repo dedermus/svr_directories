@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Directories;
+namespace Svr\Directories\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,14 +28,14 @@ class DirectoryCountriesRegionsDistrict extends Model
 	 * Поле даты создания строки
 	 * @var string
 	 */
-	const CREATED_AT								= 'district_created_at';
+	const CREATED_AT								= 'created_at';
 
 
 	/**
 	 * Поле даты обновления строки
 	 * @var string
 	 */
-	const UPDATED_AT								= 'update_at';
+	const UPDATED_AT								= 'updated_at';
 
 
 	/**
@@ -60,8 +60,8 @@ class DirectoryCountriesRegionsDistrict extends Model
 		'district_name',							// Название района
 		'district_status',							// Статус региона
 		'district_status_delete',					// Статус удаления региона
-		'district_created_at',						// Дата создания
-		'update_at',								// Дата обновления
+		'created_at',						        // Дата создания
+		'updated_at',								// Дата обновления
 	];
 
 
