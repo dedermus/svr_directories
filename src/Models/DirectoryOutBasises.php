@@ -1,6 +1,6 @@
 <?php
 
-namespace Svr\Directories\Model;
+namespace Svr\Directories\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

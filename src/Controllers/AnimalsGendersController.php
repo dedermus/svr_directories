@@ -2,7 +2,6 @@
 
 namespace Svr\Directories\Controllers;
 
-
 use OpenAdminCore\Admin\Facades\Admin;
 use OpenAdminCore\Admin\Controllers\AdminController;
 use OpenAdminCore\Admin\Form;
@@ -11,7 +10,7 @@ use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
-use Svr\Directories\Model\DirectoryGenders;
+use Svr\Directories\Models\DirectoryGenders;
 
 class AnimalsGendersController extends AdminController
 {

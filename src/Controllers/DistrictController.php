@@ -11,9 +11,9 @@ use OpenAdminCore\Admin\Form;
 use OpenAdminCore\Admin\Grid;
 use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
-use Svr\Directories\Model\DirectoryCountriesRegion;
-use Svr\Directories\Model\DirectoryCountriesRegionsDistrict;
-use Svr\Directories\Model\DirectoryCountry;
+use Svr\Directories\Models\DirectoryCountriesRegion;
+use Svr\Directories\Models\DirectoryCountriesRegionsDistrict;
+use Svr\Directories\Models\DirectoryCountry;
 
 class DistrictController extends AdminController
 {

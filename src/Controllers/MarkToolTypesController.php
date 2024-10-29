@@ -10,7 +10,7 @@ use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
-use Svr\Directories\Model\DirectoryMarkToolTypes;
+use Svr\Directories\Models\DirectoryMarkToolTypes;
 
 
 class MarkToolTypesController extends AdminController

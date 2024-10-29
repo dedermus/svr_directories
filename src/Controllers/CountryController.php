@@ -12,7 +12,7 @@ use OpenAdminCore\Admin\Form;
 use OpenAdminCore\Admin\Grid;
 use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
-use Svr\Directories\Model\DirectoryCountry;
+use Svr\Directories\Models\DirectoryCountry;
 
 class CountryController extends AdminController
 {

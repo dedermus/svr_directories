@@ -10,8 +10,7 @@ use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
-use Svr\Directories\Model\DirectoryToolsLocations;
-
+use Svr\Directories\Models\DirectoryToolsLocations;
 
 class ToolsLocationsController extends AdminController
 {

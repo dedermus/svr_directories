@@ -11,8 +11,8 @@ use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
-use Svr\Directories\Model\DirectoryAnimalsBreeds;
-use Svr\Directories\Model\DirectoryAnimalsSpecies;
+use Svr\Directories\Models\DirectoryAnimalsBreeds;
+use Svr\Directories\Models\DirectoryAnimalsSpecies;
 
 class AnimalsBreedsController extends AdminController
 {

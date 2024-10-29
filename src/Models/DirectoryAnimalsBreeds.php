@@ -1,6 +1,6 @@
 <?php
 
-namespace Svr\Directories\Model;
+namespace Svr\Directories\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -97,8 +97,9 @@ class DirectoryAnimalsBreeds extends Model
 
 	/**
 	 * Вид животного
-	 * @return array
-	 */
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
 	public function specie()
 	{
 		return $this->belongsTo(DirectoryAnimalsSpecies::class, 'specie_id', 'specie_id');
