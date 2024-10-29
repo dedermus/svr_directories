@@ -27,4 +27,4 @@ $ php artisan migrate --path=vendor/svr/directories/database/migrations
 
 Обратить внимание!  Использование двойного слеша: `\\` - для Linux/UNIX систем. Для OS использовать одинарный
 ```
-$ php artisan db:seed --class=Svr\\Directories\\Seeders\\DirectoriesSeeders
+$ php artisan db:seed --class=Svr\\Directories\\Seeders\\DirectoriesSeeder

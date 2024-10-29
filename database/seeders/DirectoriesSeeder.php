@@ -5,7 +5,7 @@ namespace Svr\Directories\Seeders;
 use Illuminate\Database\Seeder;
 use Svr\Directories\Seeders;
 
-class DirectoriesSeeders extends Seeder
+class DirectoriesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
