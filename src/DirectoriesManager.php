@@ -11,6 +11,8 @@ use OpenAdminCore\Admin\Auth\Database\Permission;
 use OpenAdminCore\Admin\Extension;
 use Svr\Directories\Controllers\CountryController;
 use Svr\Directories\Controllers\DistrictController;
+use Svr\Directories\Controllers\KeepingPurposesController;
+use Svr\Directories\Controllers\KeepingTypesController;
 use Svr\Directories\Controllers\MarkStatusesController;
 use Svr\Directories\Controllers\MarkToolTypesController;
 use Svr\Directories\Controllers\OutBasisesController;
@@ -55,7 +57,9 @@ class DirectoriesManager extends Extension
             // породы животных
             $router->resource('directories/animals_breeds', AnimalsBreedsController::class);
             // цели содержания животных
-            $router->resource('directories/keeping_purposes', KeepingPurposesSeeder::class);
+            $router->resource('directories/keeping_purposes', KeepingPurposesController::class);
+            // типы хранения
+            $router->resource('directories/keeping_types', KeepingTypesController::class);
             // виды маркирования
             $router->resource('directories/mark_statuses', MarkStatusesController::class);
             // типы маркирования
@@ -122,6 +126,11 @@ class DirectoriesManager extends Extension
                     'title'     => 'Цели содержания животных',
                     'icon'      => 'icon-receipt',
                     'uri'       => 'directories/keeping_purposes',
+                ],
+                [
+                    'title'     => 'Типы хранения',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/keeping_types',
                 ],
                 [
                     'title'     => 'Виды маркирования',

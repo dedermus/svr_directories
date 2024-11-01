@@ -46,13 +46,6 @@ class DirectoryKeepingPurposes extends Model
 
 
 	/**
-	 * На случай, если потребуется указать специфичное подключение для таблицы
-	 * @var string
-	 */
-//	protected $connection							= 'mysql';
-
-
-	/**
 	 * Значения полей по умолчанию
 	 * @var array
 	 */
@@ -97,6 +90,27 @@ class DirectoryKeepingPurposes extends Model
 		'created_at',
 	];
 
+    /**
+     * @var array|string[]
+     */
+    protected array $dates
+        = [
+            'created_at',                   // Дата создания записи
+            'updated_at',                   // Дата редактирования записи
+        ];
+
+    /**
+     * Формат хранения столбцов даты модели.
+     *
+     * @var string
+     */
+    protected $dateFormat = 'Y-m-d H:i:s';
+
+    /**
+     * @var bool
+     */
+    public $timestamps = true;
+
 
 	/**
 	 * Преобразование полей при чтении/записи
@@ -137,6 +151,7 @@ class DirectoryKeepingPurposes extends Model
         // получаем массив полей и значений и з формы
         $data = $request->all();
         if (!isset($data[$this->primaryKey])) return;
+
         // получаем id
         $id = $data[$this->primaryKey];
         // готовим сущность для обновления
@@ -162,7 +177,7 @@ class DirectoryKeepingPurposes extends Model
         // id - Первичный ключ
         if (!is_null($id)) {
             $request->validate(
-                [$this->primaryKey => 'required|exists:' . $this->getTable() . ',' . $this->primaryKey],
+                [$this->primaryKey => 'required|exists:.' . $this->getTable() . ',' . $this->primaryKey],
                 [$this->primaryKey => trans('svr-core-lang::validation.required')],
             );
         }
@@ -193,8 +208,8 @@ class DirectoryKeepingPurposes extends Model
 
         // keeping_purposee_status - Статус
         $request->validate(
-            ['keeping_purposee_status' => 'required'],
-            ['keeping_purposee_status' => trans('svr-core-lang::validation')],
+            ['keeping_purpose_status' => 'required'],
+            ['keeping_purpose_status' => trans('svr-core-lang::validation')],
         );
 
         // keeping_purpose_status_delete - Статус удаления

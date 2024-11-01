@@ -79,8 +79,29 @@ class DirectoryAnimalsSpecies extends Model
 	 * @var array
 	 */
 	protected $hidden								= [
-		'specie_created_at',
+		'created_at',
 	];
+
+    /**
+     * @var array|string[]
+     */
+    protected array $dates
+        = [
+            'created_at',                   // Дата создания записи
+            'updated_at',                   // Дата редактирования записи
+        ];
+
+    /**
+     * Формат хранения столбцов даты модели.
+     *
+     * @var string
+     */
+    protected $dateFormat = 'Y-m-d H:i:s';
+
+    /**
+     * @var bool
+     */
+    public $timestamps = true;
 
 
 	/**
@@ -147,7 +168,7 @@ class DirectoryAnimalsSpecies extends Model
         // id - Первичный ключ
         if (!is_null($id)) {
             $request->validate(
-                [$this->primaryKey => 'required|exists:' . $this->getTable() . ',' . $this->primaryKey],
+                [$this->primaryKey => 'required|exists:.' . $this->getTable() . ',' . $this->primaryKey],
                 [$this->primaryKey => trans('svr-core-lang::validation.required')],
             );
         }

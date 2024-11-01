@@ -25,13 +25,6 @@ class DirectoryGenders extends Model
 
 
 	/**
-	 * Флаг наличия автообновляемых полей
-	 * @var string
-	 */
-//	public $timestamps								= false;
-
-
-	/**
 	 * Поле даты создания строки
 	 * @var string
 	 */
@@ -43,13 +36,6 @@ class DirectoryGenders extends Model
 	 * @var string
 	 */
 	const UPDATED_AT								= 'updated_at';
-
-
-	/**
-	 * На случай, если потребуется указать специфичное подключение для таблицы
-	 * @var string
-	 */
-//	protected $connection							= 'mysql';
 
 
 	/**
@@ -95,6 +81,27 @@ class DirectoryGenders extends Model
 	protected $hidden								= [
 		'created_at',
 	];
+
+    /**
+     * @var array|string[]
+     */
+    protected array $dates
+        = [
+            'created_at',                   // Дата создания записи
+            'updated_at',                   // Дата редактирования записи
+        ];
+
+    /**
+     * Формат хранения столбцов даты модели.
+     *
+     * @var string
+     */
+    protected $dateFormat = 'Y-m-d H:i:s';
+
+    /**
+     * @var bool
+     */
+    public $timestamps = true;
 
 
 	/**
@@ -161,7 +168,7 @@ class DirectoryGenders extends Model
         // id - Первичный ключ
         if (!is_null($id)) {
             $request->validate(
-                [$this->primaryKey => 'required|exists:' . $this->getTable() . ',' . $this->primaryKey],
+                [$this->primaryKey => 'required|exists:.' . $this->getTable() . ',' . $this->primaryKey],
                 [$this->primaryKey => trans('svr-core-lang::validation.required')],
             );
         }

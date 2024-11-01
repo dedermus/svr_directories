@@ -25,7 +25,7 @@ class DistrictController extends AdminController
     {
         $this->model = DirectoryCountriesRegionsDistrict::class;                            // Класс модели
         $this->model_obj = new $this->model;                                                // Модель
-        $this->trans = 'directories' . '.';                                                   // Переводы
+        $this->trans = 'svr-directories-lang::directories.countries_regions_districts' . '.';   // Переводы
         $this->title = trans($this->trans . 'countries_regions_districts');            // Заголовок
         $this->all_columns_obj = Schema::getColumns($this->model_obj->getTable());         // Все столбцы
     }
@@ -258,9 +258,9 @@ class DistrictController extends AdminController
             ->default('active')
             ->rules('required', ['required' => trans('validation.required')]);
 
-        $form->display('district_created_at', __('district_created_at'))
+        $form->display('created_at', __('created_at'))
             ->help(trans('svr.created_at'));;
-        $form->display('update_at', __('update_at'))
+        $form->display('updated_at', __('updated_at'))
             ->help(trans('svr.updated_at'));;
 
         // Отключить "Продолжить создание"

@@ -73,6 +73,24 @@ class DirectoryCountriesRegion extends Model
 		'region_id',
 	];
 
+    /**
+     * @var array|string[]
+     */
+    protected array $dates
+        = [
+            'created_at',                   // Дата создания записи
+            'updated_at',                   // Дата редактирования записи
+        ];
 
+    /**
+     * Формат хранения столбцов даты модели.
+     *
+     * @var string
+     */
+    protected $dateFormat = 'Y-m-d H:i:s';
 
+    /**
+     * @var bool
+     */
+    public $timestamps = true;
 }

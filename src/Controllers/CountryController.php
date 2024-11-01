@@ -12,7 +12,7 @@ use OpenAdminCore\Admin\Form;
 use OpenAdminCore\Admin\Grid;
 use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
-use Svr\Directories\Models\DirectoryCountry;
+use Svr\Directories\Models\DirectoryCountries;
 
 class CountryController extends AdminController
 {
@@ -24,9 +24,9 @@ class CountryController extends AdminController
 
     public function __construct()
     {
-        $this->model = DirectoryCountry::class;
+        $this->model = DirectoryCountries::class;
         $this->model_obj = new $this->model;                                                // Модель
-        $this->trans = 'directories'.'.';                                                   // Переводы
+        $this->trans = 'svr-directories-lang::directories.countries.';                                                   // Переводы
         $this->title = trans($this->trans . 'countries');                               // Заголовок
         $this->all_columns_obj = Schema::getColumns($this->model_obj->getTable());          // Все столбцы
     }

@@ -95,6 +95,7 @@ class DirectoryAnimalsBreeds extends Model
      */
     protected $dateFormat = 'Y-m-d H:i:s';
 
+
 	/**
 	 * Вид животного
 	 *
@@ -157,14 +158,14 @@ class DirectoryAnimalsBreeds extends Model
         // id - Первичный ключ
         if (!is_null($id)) {
             $request->validate(
-                [$this->primaryKey => 'required|exists:' . $this->getTable() . ',' . $this->primaryKey],
+                [$this->primaryKey => 'required|exists:.' . $this->getTable() . ',' . $this->primaryKey],
                 [$this->primaryKey => trans('svr-core-lang::validation.required')],
             );
         }
 
         // specie_id - идентификатор видас
         $request->validate(
-            ['specie_id' => 'required|exists:directories.animals_species,specie_id'],
+            ['specie_id' => 'required|exists:.directories.animals_species,specie_id'],
             ['specie_id' => trans('svr-core-lang::validation')],
         );
 

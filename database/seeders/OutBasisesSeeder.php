@@ -107,6 +107,7 @@ class OutBasisesSeeder extends Seeder
                 "out_basis_guid_self" => "5fb868cb-4e25-4d39-bbd4-7e76bc54ab89",
                 "out_basis_name" => "Убой животного в научно-исследовательских целях",
                 "out_basis_value_horriot" => "RESEARCH_OBJECTIVES",
+                "out_basis_selex_code" => null,
                 "out_basis_status" => "disabled",
                 "out_basis_status_delete" => "active",
             ],

@@ -25,7 +25,7 @@ class RegionController extends AdminController
     {
         $this->model = DirectoryCountriesRegion::class;
         $this->model_obj = new $this->model;                                                // Модель
-        $this->trans = 'directories'.'.';                                                   // Переводы
+        $this->trans = 'svr-directories-lang::directories.countries_regions.';                                                   // Переводы
         $this->title = trans($this->trans . 'countries_regions');                       // Заголовок
         $this->all_columns_obj = Schema::getColumns($this->model_obj->getTable());          // Все столбцы
     }

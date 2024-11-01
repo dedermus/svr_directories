@@ -2,7 +2,7 @@
 
 return [
 
-    'animals_breeds'     => [
+    'animals_breeds'              => [
         'title'       => 'Породы животных',
         'create'      => 'Создание породы',
         'edit'        => 'Редактирование породы',
@@ -10,7 +10,7 @@ return [
         'breed_id'    => 'ID породы',
         'breed_name'  => 'Наименование породы'
     ],
-    'animals_species'    => [
+    'animals_species'             => [
         'title'       => 'Виды животных',
         'create'      => 'Создание вида',
         'edit'        => 'Редактирование вида',
@@ -18,15 +18,15 @@ return [
         'specie_id'   => 'ID вида',
         'specie_name' => 'Наименование вида'
     ],
-    'animals_genders'    => [
-        'title'       => 'Полы животных',
+    'animals_genders'             => [
+        'title'       => 'Пол животного',
         'create'      => 'Создание пола',
         'edit'        => 'Редактирование пола',
         'description' => 'Импортированные полы из ХОРРИОТ',
         'gender_id'   => 'ID пола',
         'gender_name' => 'Наименование пола'
     ],
-    'tools_locations'    => [
+    'tools_locations'             => [
         'title'              => 'Места нанесения маркировки',
         'create'             => 'Создание места нанесения',
         'edit'               => 'Редактирование места нанесения',
@@ -34,7 +34,7 @@ return [
         'tool_location_id'   => 'ID места нанесения',
         'tool_location_name' => 'Наименование места нанесения'
     ],
-    'keeping_purposes'   => [
+    'keeping_purposes'            => [
         'title'                => 'Цели содержания',
         'create'               => 'Создание цели содержания',
         'edit'                 => 'Редактирование цели содержания',
@@ -42,7 +42,7 @@ return [
         'keeping_purpose_id'   => 'ID цели содержания',
         'keeping_purpose_name' => 'Наименование цели содержания'
     ],
-    'keeping_types'      => [
+    'keeping_types'               => [
         'title'             => 'Типы содержания',
         'create'            => 'Создание типа содержания',
         'edit'              => 'Редактирование типа содержания',
@@ -50,7 +50,7 @@ return [
         'keeping_type_id'   => 'ID типа содержания',
         'keeping_type_name' => 'Наименование типа содержания'
     ],
-    'mark_statuses'      => [
+    'mark_statuses'               => [
         'title'            => 'Виды маркирования',
         'create'           => 'Создание вида маркирования',
         'edit'             => 'Редактирование вида маркирования',
@@ -58,7 +58,7 @@ return [
         'mark_status_id'   => 'ID вида маркирования',
         'mark_status_name' => 'Наименование вида маркирования'
     ],
-    'mark_tool_types'    => [
+    'mark_tool_types'             => [
         'title'               => 'Типы маркирования',
         'create'              => 'Создание типа маркирования',
         'edit'                => 'Редактирование типа маркирования',
@@ -66,7 +66,7 @@ return [
         'mark_tool_type_id'   => 'ID типа маркирования',
         'mark_tool_type_name' => 'Наименование типа маркирования'
     ],
-    'mark_types'         => [
+    'mark_types'                  => [
         'title'          => 'Виды номеров',
         'create'         => 'Создание вида номера',
         'edit'           => 'Редактирование вида номера',
@@ -74,7 +74,7 @@ return [
         'mark_type_id'   => 'ID вида номера',
         'mark_type_name' => 'Наименование вида номера'
     ],
-    'out_basises'        => [
+    'out_basises'                 => [
         'title'          => 'Основания выбытия',
         'create'         => 'Создание основания выбытия',
         'edit'           => 'Редактирование основания выбытия',
@@ -82,7 +82,7 @@ return [
         'out_basis_id'   => 'ID основания выбытия',
         'out_basis_name' => 'Наименование основания выбытия'
     ],
-    'out_types'          => [
+    'out_types'                   => [
         'title'         => 'Типы расхода',
         'create'        => 'Создание типа расхода',
         'edit'          => 'Редактирование типа расхода',
@@ -90,13 +90,54 @@ return [
         'out_type_id'   => 'ID типа расхода',
         'out_type_name' => 'Наименование типа расхода'
     ],
-    'guid_self'          => 'GUID СВР',
-    'guid_horriot'       => 'GUID Хорриот',
-    'value_horriot'      => 'Значение Хорриот',
-    'uuid_horriot'       => 'UUID Хорриот',
-    'selex_code'         => 'Код в SEALEX',
-    'item_status'        => 'Статус записи',
-    'item_status_delete' => 'Статус удаления записи',
-    'created_at'         => 'Дата создания',
-    'update_at'          => 'Дата обновления'
+    'countries_regions_districts' => [
+        'countries_regions_districts' => 'Районы',
+        'district_id'                 => 'Инкремент',
+        'district_rn'                 => 'Внешний код района',
+        'region_id'                   => 'Внутренний код области',
+        'country_ngos'                => 'Внутренний код страны',
+        'district_name'               => 'Название района',
+        'district_status'             => 'Статус записи',
+        'district_status_delete'      => 'Статус удаления записи',
+        'created_at'                  => 'Дата и время создания записи',
+        'updated_at'                  => 'Дата и время редактирования записи',
+    ],
+    'countries_regions'           => [
+        'countries_regions'    => 'Области',
+        'region_id'            => 'Инкремент',
+        'region_obl'           => 'Внешний код региона',
+        'country_id'           => 'NGOS - внутренний код государства из таблицы DIRECTORY.COUNTRIES',
+        'region_name'          => 'Название области',
+        'region_status'        => 'Статус записи',
+        'region_status_delete' => 'Статус удаления записи',
+        'created_at'           => 'Дата и время создания записи',
+        'updated_at'           => 'Дата и время редактирования записи',
+    ],
+    'countries'                   => [
+        'countries'             => 'Страны',
+        'country_id'            => 'Инкремент',
+        'country_guid_self'     => 'GUID (внутренний) государства',
+        'country_guid_horriot'  => 'GUID (хорриота) государства',
+        'country_uuid_horriot'  => 'UUID (хорриота) государства',
+        'country_ngos'          => 'Код страны внутренний',
+        'country_gos'           => 'Код страны внешний',
+        'country_name'          => 'Название страны по русски',
+        'country_kod'           => 'Буквенный код альфа-',
+        'country_kod3'          => 'Буквенный код альфа-3',
+        'country_kod3_cifra'    => 'Цифровой код страны; ТРЕХЗНАЧНЫЙ',
+        'country_name_eng'      => 'Название страны по английски',
+        'country_status'        => 'Статус страны',
+        'country_status_delete' => 'Статус удаления страны',
+        'created_at'            => 'Дата и время создания записи',
+        'updated_at'            => 'Дата и время редактирования записи',
+    ],
+    'guid_self'                   => 'GUID СВР',
+    'guid_horriot'                => 'GUID Хорриот',
+    'value_horriot'               => 'Значение Хорриот',
+    'uuid_horriot'                => 'UUID Хорриот',
+    'selex_code'                  => 'Код в SELEX',
+    'item_status'                 => 'Статус записи',
+    'item_status_delete'          => 'Статус удаления записи',
+    'created_at'                  => 'Дата создания',
+    'updated_at'                  => 'Дата обновления'
 ];

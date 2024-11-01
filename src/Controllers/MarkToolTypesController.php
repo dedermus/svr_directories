@@ -23,8 +23,8 @@ class MarkToolTypesController extends AdminController
     public function index(Content $content)
     {
         return Admin::content(function (Content $content) {
-            $content->header(trans('svr-directories-lang:directories.mark_tool_types.title'));
-            $content->description(trans('svr-directories-lang:directories.mark_tool_types.description'));
+            $content->header(trans('svr-directories-lang::directories.mark_tool_types.title'));
+            $content->description(trans('svr-directories-lang::directories.mark_tool_types.description'));
             $content->body($this->grid());
         });
     }
@@ -37,8 +37,8 @@ class MarkToolTypesController extends AdminController
     public function create(Content $content)
     {
         return Admin::content(function (Content $content) {
-            $content->header(trans('svr-directories-lang:directories.mark_tool_types.title'));
-            $content->description(trans('svr-directories-lang:directories.mark_tool_types.create'));
+            $content->header(trans('svr-directories-lang::directories.mark_tool_types.title'));
+            $content->description(trans('svr-directories-lang::directories.mark_tool_types.create'));
             $content->body($this->form());
         });
     }
@@ -54,8 +54,8 @@ class MarkToolTypesController extends AdminController
     public function edit($id, Content $content)
     {
         return $content
-            ->title(trans('svr-directories-lang:directories.mark_tool_types.title'))
-            ->description(trans('svr-directories-lang:directories.mark_tool_types.edit'))
+            ->title(trans('svr-directories-lang::directories.mark_tool_types.title'))
+            ->description(trans('svr-directories-lang::directories.mark_tool_types.edit'))
             ->row($this->form()->edit($id));
     }
 
@@ -70,8 +70,8 @@ class MarkToolTypesController extends AdminController
     public function show($id, Content $content)
     {
 		return $content
-			->title(__('svr-directories-lang:directories.mark_tool_types.title'))
-			->description(__('svr-directories-lang:directories.mark_tool_types.description'))
+			->title(__('svr-directories-lang::directories.mark_tool_types.title'))
+			->description(__('svr-directories-lang::directories.mark_tool_types.description'))
 			->body($this->detail($id));
     }
 
@@ -90,13 +90,13 @@ class MarkToolTypesController extends AdminController
     protected function grid(): Grid
     {
         $grid = new Grid(new DirectoryMarkToolTypes());
-        $grid->column('mark_tool_type_id', __('svr-directories-lang:directories.mark_tool_types.mark_tool_type_id'))->sortable();
-		$grid->column('mark_tool_type_guid_self', __('svr-directories-lang:directories.guid_self'))->sortable();
-		$grid->column('mark_tool_type_value_horriot', __('svr-directories-lang:directories.value_horriot'))->sortable();
-		$grid->column('mark_tool_type_name', __('svr-directories-lang:directories.mark_tool_types.mark_tool_type_name'))->sortable();
-		$grid->column('mark_tool_type_selex_code', __('svr-directories-lang:directories.selex_code'))->sortable();
-		$grid->column('mark_tool_type_status', __('svr-directories-lang:directories.item_status'))->sortable();
-		$grid->column('mark_tool_type_status_delete', __('svr-directories-lang:directories.item_status_delete'))->sortable();
+        $grid->column('mark_tool_type_id', __('svr-directories-lang::directories.mark_tool_types.mark_tool_type_id'))->sortable();
+		$grid->column('mark_tool_type_guid_self', __('svr-directories-lang::directories.guid_self'))->sortable();
+		$grid->column('mark_tool_type_value_horriot', __('svr-directories-lang::directories.value_horriot'))->sortable();
+		$grid->column('mark_tool_type_name', __('svr-directories-lang::directories.mark_tool_types.mark_tool_type_name'))->sortable();
+		$grid->column('mark_tool_type_selex_code', __('svr-directories-lang::directories.selex_code'))->sortable();
+		$grid->column('mark_tool_type_status', __('svr-directories-lang::directories.item_status'))->sortable();
+		$grid->column('mark_tool_type_status_delete', __('svr-directories-lang::directories.item_status_delete'))->sortable();
 
 		$grid->disableCreateButton();
 		$grid->disableExport();
@@ -114,13 +114,13 @@ class MarkToolTypesController extends AdminController
     protected function detail($id)
     {
         $show = new Show(DirectoryMarkToolTypes::findOrFail($id));
-        $show->field('mark_tool_type_id', __('svr-directories-lang:directories.mark_tool_types.mark_tool_type_id'));
-        $show->field('mark_tool_type_guid_self', __('svr-directories-lang:directories.guid_self'));
-        $show->field('mark_tool_type_value_horriot', __('svr-directories-lang:directories.value_horriot'));
-        $show->field('mark_tool_type_name', __('svr-directories-lang:directories.mark_tool_types.mark_tool_type_name'));
-        $show->field('mark_tool_type_selex_code', __('svr-directories-lang:directories.selex_code'));
-        $show->field('mark_tool_type_status', __('svr-directories-lang:directories.item_status'));
-        $show->field('mark_tool_type_status_delete', __('svr-directories-lang:directories.item_status_delete'));
+        $show->field('mark_tool_type_id', __('svr-directories-lang::directories.mark_tool_types.mark_tool_type_id'));
+        $show->field('mark_tool_type_guid_self', __('svr-directories-lang::directories.guid_self'));
+        $show->field('mark_tool_type_value_horriot', __('svr-directories-lang::directories.value_horriot'));
+        $show->field('mark_tool_type_name', __('svr-directories-lang::directories.mark_tool_types.mark_tool_type_name'));
+        $show->field('mark_tool_type_selex_code', __('svr-directories-lang::directories.selex_code'));
+        $show->field('mark_tool_type_status', __('svr-directories-lang::directories.item_status'));
+        $show->field('mark_tool_type_status_delete', __('svr-directories-lang::directories.item_status_delete'));
 
         return $show;
     }
@@ -134,31 +134,31 @@ class MarkToolTypesController extends AdminController
     {
         $form = new Form(new DirectoryMarkToolTypes());
 
-		$form->text('mark_tool_type_id', __('svr-directories-lang:directories.mark_tool_types.mark_tool_type_id'))
+		$form->text('mark_tool_type_id', __('svr-directories-lang::directories.mark_tool_types.mark_tool_type_id'))
 			->readonly(true)
-			->help(__('svr-directories-lang:directories.mark_tool_types.mark_tool_type_id'));
-		$form->text('mark_tool_type_guid_self', __('svr-directories-lang:directories.guid_self'))
-			->readonly(true)
-			->required()
-			->help(__('svr-directories-lang:directories.guid_self'));
-		$form->text('mark_tool_type_value_horriot', __('svr-directories-lang:directories.value_horriot'))
+			->help(__('svr-directories-lang::directories.mark_tool_types.mark_tool_type_id'));
+		$form->text('mark_tool_type_guid_self', __('svr-directories-lang::directories.guid_self'))
 			->readonly(true)
 			->required()
-			->help(__('svr-directories-lang:directories.value_horriot'));
-		$form->text('mark_tool_type_name', __('svr-directories-lang:directories.mark_tool_types.mark_tool_type_name'))
+			->help(__('svr-directories-lang::directories.guid_self'));
+		$form->text('mark_tool_type_value_horriot', __('svr-directories-lang::directories.value_horriot'))
+			->readonly(true)
 			->required()
-			->help(__('svr-directories-lang:directories.mark_tool_types.mark_tool_type_name'));
-		$form->text('mark_tool_type_selex_code', __('svr-directories-lang:directories.selex_code'))
-			->help(__('svr-directories-lang:directories.selex_code'));
-		$form->select('mark_tool_type_status', __('svr-directories-lang:directories.item_status'))
+			->help(__('svr-directories-lang::directories.value_horriot'));
+		$form->text('mark_tool_type_name', __('svr-directories-lang::directories.mark_tool_types.mark_tool_type_name'))
+			->required()
+			->help(__('svr-directories-lang::directories.mark_tool_types.mark_tool_type_name'));
+		$form->text('mark_tool_type_selex_code', __('svr-directories-lang::directories.selex_code'))
+			->help(__('svr-directories-lang::directories.selex_code'));
+		$form->select('mark_tool_type_status', __('svr-directories-lang::directories.item_status'))
 			->options(SystemStatusEnum::get_option_list())
 			->default('enabled')->required();
-		$form->select('mark_tool_type_status_delete', trans('svr-directories-lang:directories.item_status_delete'))
+		$form->select('mark_tool_type_status_delete', trans('svr-directories-lang::directories.item_status_delete'))
 			->options(SystemStatusDeleteEnum::get_option_list())->default('active')
 			->readonly(true)->required();
 
-        $form->date('created_at', __('svr-directories-lang:directories.created_at'));
-        $form->date('updated_at', __('svr-directories-lang:directories.updated_at'));
+        $form->date('created_at', __('svr-directories-lang::directories.created_at'));
+        $form->date('updated_at', __('svr-directories-lang::directories.updated_at'));
 
         // обработка формы
         $form->saving(function (Form $form)

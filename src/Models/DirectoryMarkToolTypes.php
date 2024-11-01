@@ -93,6 +93,27 @@ class DirectoryMarkToolTypes extends Model
 	}
 
     /**
+     * @var array|string[]
+     */
+    protected array $dates
+        = [
+            'created_at',                   // Дата создания записи
+            'updated_at',                   // Дата редактирования записи
+        ];
+
+    /**
+     * Формат хранения столбцов даты модели.
+     *
+     * @var string
+     */
+    protected $dateFormat = 'Y-m-d H:i:s';
+
+    /**
+     * @var bool
+     */
+    public $timestamps = true;
+
+    /**
      * Создать запись
      *
      * @param $request
@@ -144,7 +165,7 @@ class DirectoryMarkToolTypes extends Model
         // id - Первичный ключ
         if (!is_null($id)) {
             $request->validate(
-                [$this->primaryKey => 'required|exists:' . $this->getTable() . ',' . $this->primaryKey],
+                [$this->primaryKey => 'required|exists:.' . $this->getTable() . ',' . $this->primaryKey],
                 [$this->primaryKey => trans('svr-core-lang::validation.required')],
             );
         }
