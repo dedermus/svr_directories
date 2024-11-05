@@ -13,7 +13,7 @@ use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
 use Svr\Directories\Models\DirectoryCountriesRegion;
 use Svr\Directories\Models\DirectoryCountriesRegionsDistrict;
-use Svr\Directories\Models\DirectoryCountry;
+use Svr\Directories\Models\DirectoryCountries;
 
 class DistrictController extends AdminController
 {
@@ -128,7 +128,7 @@ class DistrictController extends AdminController
         $grid->filter(function (Grid\Filter $filter) {
             $filter->equal('country_ngos', 'COUNTRY_NGOS')
                 ->select(function () {
-                    $data = DirectoryCountry::all()
+                    $data = DirectoryCountries::all()
                         ->pluck('country_name', 'country_ngos');
                     // к названию региона добавляем id
                     foreach ($data as $key => $value) {
@@ -237,7 +237,7 @@ class DistrictController extends AdminController
 
         $form->display('country_ngos', __('country_ngos'))
             ->customFormat(function ($id) {
-            $name = DirectoryCountry::all()->where('country_ngos', $id)
+            $name = DirectoryCountries::all()->where('country_ngos', $id)
                 ->pluck('country_name', 'country_ngos')->first();
             return ' ( ' . $id . ' ) ' . $name;
         })

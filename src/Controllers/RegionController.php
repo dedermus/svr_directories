@@ -13,7 +13,7 @@ use OpenAdminCore\Admin\Grid;
 use OpenAdminCore\Admin\Show;
 use OpenAdminCore\Admin\Layout\Content;
 use Svr\Directories\Models\DirectoryCountriesRegion;
-use Svr\Directories\Models\DirectoryCountry;
+use Svr\Directories\Models\DirectoryCountries;
 
 class RegionController extends AdminController
 {
@@ -124,7 +124,7 @@ class RegionController extends AdminController
         $grid->filter(function (Grid\Filter $filter) {
             $filter->equal('country_id', 'COUNTRY_ID')
                 ->select(function () {
-                    $data = DirectoryCountry::all()
+                    $data = DirectoryCountries::all()
                         ->pluck('country_name', 'country_id');
                     // к названию региона добавляем id
                     foreach ($data as $key => $value) {
@@ -208,7 +208,7 @@ class RegionController extends AdminController
             ->help(trans(strtolower($this->trans . 'region_obl')));
 
         $form->select('country_id', __('country_id'))->options(function () {
-            $data = DirectoryCountry::all()->pluck('country_name', 'country_id');
+            $data = DirectoryCountries::all()->pluck('country_name', 'country_id');
             // к названию региона добавляем id
             foreach ($data as $key => $value) {
                 $data[$key] = ' ( ' . $key . ' ) ' . $value;
