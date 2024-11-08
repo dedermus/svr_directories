@@ -4,83 +4,80 @@ namespace Svr\Directories\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Svr\Core\Enums\SystemStatusDeleteEnum;
+use Svr\Core\Enums\SystemStatusEnum;
 
 class DirectoryGenders extends Model
 {
     use HasFactory;
 
+    /**
+     * Точное название таблицы с учетом схемы
+     *
+     * @var string
+     */
+    protected $table = 'directories.genders';
 
-	/**
-	 * Точное название таблицы с учетом схемы
-	 * @var string
-	 */
-	protected $table								= 'directories.genders';
+    /**
+     * Первичный ключ таблицы (автоинкремент)
+     *
+     * @var string
+     */
+    protected $primaryKey = 'gender_id';
 
+    /**
+     * Поле даты создания строки
+     *
+     * @var string
+     */
+    const CREATED_AT = 'created_at';
 
-	/**
-	 * Первичный ключ таблицы (автоинкремент)
-	 * @var string
-	 */
-	protected $primaryKey							= 'gender_id';
+    /**
+     * Поле даты обновления строки
+     *
+     * @var string
+     */
+    const UPDATED_AT = 'updated_at';
 
+    /**
+     * Значения полей по умолчанию
+     *
+     * @var array
+     */
+    protected $attributes
+        = [
+            'gender_status'        => 'enabled',
+            'gender_status_delete' => 'active',
+        ];
 
-	/**
-	 * Поле даты создания строки
-	 * @var string
-	 */
-	const CREATED_AT								= 'created_at';
+    /**
+     * Поля, которые можно менять сразу массивом
+     *
+     * @var array
+     */
+    protected $fillable
+        = [
+            'gender_guid_self',                         // GUID (внутренний) полов животного
+            'gender_name',                              // Наименование полов животного
+            'gender_value_horriot',                     // Значение для хорриота полов животного
+            'gender_selex_code',                        // Код полов животного в Селэксе
+            'gender_status',                            // Статус полов животного
+            'gender_status_delete',                     // Статус удаления полов животного
+            'created_at',                               // Дата создания
+            'updated_at',                               // Дата обновления
+        ];
 
-
-	/**
-	 * Поле даты обновления строки
-	 * @var string
-	 */
-	const UPDATED_AT								= 'updated_at';
-
-
-	/**
-	 * Значения полей по умолчанию
-	 * @var array
-	 */
-	protected $attributes							= [
-		'gender_status'								=> 'enabled',
-		'gender_status_delete'						=> 'active',
-	];
-
-
-	/**
-	 * Поля, которые можно менять сразу массивом
-	 * @var array
-	 */
-	protected $fillable								= [
-		'gender_id ',								// Идентификатор полов животного
-		'gender_guid_self',							// GUID (внутренний) полов животного
-		'gender_name',								// Наименование полов животного
-		'gender_value_horriot',						// Значение для хорриота полов животного
-		'gender_selex_code',						// Код полов животного в Селэксе
-		'gender_status',							// Статус полов животного
-		'gender_status_delete',						// Статус удаления полов животного
-		'created_at',						        // Дата создания
-		'updated_at',								// Дата обновления
-	];
-
-
-	/**
-	 * Поля, которые нельзя менять сразу массивом
-	 * @var array
-	 */
-	protected $guarded								= [
-		'gender_id',
-	];
-
-
-	/**
-	 * Массив системных скрытых полей
-	 * @var array
-	 */
-	protected $hidden								= [
-		'created_at',
-	];
+    /**
+     * Поля, которые нельзя менять сразу массивом
+     *
+     * @var array
+     */
+    protected $guarded
+        = [
+            'gender_id ',                                // Идентификатор полов животного
+        ];
 
     /**
      * @var array|string[]
@@ -103,104 +100,100 @@ class DirectoryGenders extends Model
      */
     public $timestamps = true;
 
-
-	/**
-	 * Преобразование полей при чтении/записи
-	 * @return array
-	 */
-	protected function casts(): array
-	{
-		return [
-//			'update_at'								=> 'timestamp',
-//			'gender_created_at'						=> 'timestamp',
-		];
-	}
-
     /**
      * Создать запись
      *
-     * @param $request
+     * @param Request $request
      *
      * @return void
      */
-    public function animalGenderCreate($request): void
+    public function animalGenderCreate(Request $request): void
     {
-        $this->rules($request);
-        $this->fill($request->all());
-        $this->save();
+        $this->validateRequest($request);
+        $this->fill($request->all())->save();
     }
 
     /**
      * Обновить запись
-     * @param $request
+     *
+     * @param Request $request
      *
      * @return void
      */
-    public function animalGenderUpdate($request): void
+    public function animalGenderUpdate(Request $request): void
     {
-        // валидация
-        $this->rules($request);
-        // получаем массив полей и значений и з формы
+        $this->validateRequest($request);
         $data = $request->all();
-        if (!isset($data[$this->primaryKey])) return;
-        // получаем id
-        $id = $data[$this->primaryKey];
-        // готовим сущность для обновления
-        $modules_data = $this->find($id);
-        // обновляем запись
-        $modules_data->update($data);
+        $id = $data[$this->primaryKey] ?? null;
+
+        if ($id) {
+            $gender = $this->find($id);
+            if ($gender) {
+                $gender->update($data);
+            }
+        }
     }
 
     /**
-     * Валидация входных данных
-     * @param $request
+     * Валидация запроса
+     * @param Request $request
      *
      * @return void
      */
-    private function rules($request): void
+    private function validateRequest(Request $request):void
     {
-        // получаем поля со значениями
-        $data = $request->all();
+        $rules = $this->getValidationRules($request);
+        $messages = $this->getValidationMessages();
+        $request->validate($rules, $messages);
+    }
 
-        // получаем значение первичного ключа
-        $id = (isset($data[$this->primaryKey])) ? $data[$this->primaryKey] : null;
+    /**
+     * Получить правила валидации
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function getValidationRules(Request $request): array
+    {
+        $id = $request->input($this->primaryKey);
+        $directoryAnimalsSpecies = new DirectoryAnimalsSpecies();
 
-        // id - Первичный ключ
-        if (!is_null($id)) {
-            $request->validate(
-                [$this->primaryKey => 'required|exists:.' . $this->getTable() . ',' . $this->primaryKey],
-                [$this->primaryKey => trans('svr-core-lang::validation.required')],
-            );
-        }
+        return [
+            $this->primaryKey      => [
+                $request->isMethod('put') ? 'required' : '',
+                Rule::exists('.' . $this->getTable(), $this->primaryKey),
+            ],
+            'gender_guid_self'     => 'required|string|min:3|max:64',
+            'gender_value_horriot' => 'required|string|min:3|max:64',
+            'gender_name'          => 'required|string|min:2|max:100',
+            'gender_selex_code'    => 'nullable|string|max:64',
+            'gender_status'        => [
+                'required',
+                Rule::enum(SystemStatusEnum::class),
+            ],
+            'gender_status_delete' => [
+                'required',
+                Rule::enum(SystemStatusDeleteEnum::class),
+            ],
+        ];
+    }
 
-        // gender_guid_self - Гуид в СВР
-        $request->validate(
-            ['gender_guid_self' => 'required|string|min:3|max:64'],
-            ['gender_guid_self' => trans('svr-core-lang::validation')],
-        );
-
-        // gender_value_horriot - Гуид в хорриот
-        $request->validate(
-            ['gender_value_horriot' => 'required|string|min:3|max:64'],
-            ['gender_value_horriot' => trans('svr-core-lang::validation')],
-        );
-
-        // gender_name - имя пола
-        $request->validate(
-            ['gender_name' => 'required|string|min:2|max:100'],
-            ['gender_name' => trans('svr-core-lang::validation')],
-        );
-
-        // gender_status - Статус пола
-        $request->validate(
-            ['gender_status' => 'required'],
-            ['gender_status' => trans('svr-core-lang::validation')],
-        );
-
-        // gender_status_delete - Статус удаления пола
-        $request->validate(
-            ['gender_status_delete' => 'required'],
-            ['gender_status_delete' => trans('svr-core-lang::validation')],
-        );
+    /**
+     * Получить сообщения об ошибках валидации
+     *
+     * @return array
+     */
+    private function getValidationMessages(): array
+    {
+        return [
+            $this->primaryKey      => trans('svr-core-lang::validation.required'),
+            'gender_guid_self'     => trans('svr-core-lang::validation'),
+            'gender_value_horriot' => trans('svr-core-lang::validation'),
+            'gender_name'          => trans('svr-core-lang::validation'),
+            'gender_selex_code'    => trans('svr-core-lang::validation'),
+            'gender_status'        => trans('svr-core-lang::validation'),
+            'gender_status_delete' => trans('svr-core-lang::validation'),
+        ];
     }
 }

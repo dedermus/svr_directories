@@ -31630,6 +31630,6 @@ class CountriesRegionsDistrictsSeeder extends Seeder
                 "updated_at" => "2024-09-19 00:30:06.882923"
             ]
         ]);
-
+        DB::statement("SELECT setval('system.countries_regions_districts_district_id_seq', (SELECT MAX(district_id) from directories.countries_regions_districts))");
     }
 }

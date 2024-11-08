@@ -8011,6 +8011,6 @@ class AnimalsBreedsSeeder extends Seeder
                 "updated_at" => "2024-11-01 12:28:44"
             ]
         ]);
-
+        DB::statement("SELECT setval('system.animals_breeds_breed_id_seq', (SELECT MAX(breed_id) from directories.animals_breeds))");
     }
 }

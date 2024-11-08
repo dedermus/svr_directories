@@ -287,6 +287,6 @@ class ToolsLocationsSeeder extends Seeder
                 "updated_at"                  => Carbon::now()->format('Y-m-d H:i:s'),
             ]
         ]);
-
+        DB::statement("SELECT setval('system.tools_locations_tool_location_id_seq', (SELECT MAX(tool_location_id) from directories.tools_locations))");
     }
 }

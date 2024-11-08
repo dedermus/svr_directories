@@ -17,17 +17,19 @@ use Svr\Directories\Models\DirectoryCountries;
 
 class RegionController extends AdminController
 {
-    protected $model;
-    protected $title;
-    protected $all_columns_obj;
+    /**
+     * Экземпляр класса модели
+     *
+     * @var DirectoryCountriesRegion
+     */
+    private DirectoryCountriesRegion $directoryCountriesRegion;
 
+    /**
+     * Конструктор
+     */
     public function __construct()
     {
-        $this->model = DirectoryCountriesRegion::class;
-        $this->model_obj = new $this->model;                                                // Модель
-        $this->trans = 'svr-directories-lang::directories.countries_regions.';                                                   // Переводы
-        $this->title = trans($this->trans . 'countries_regions');                       // Заголовок
-        $this->all_columns_obj = Schema::getColumns($this->model_obj->getTable());          // Все столбцы
+        $this->directoryCountriesRegion = new DirectoryCountriesRegion();
     }
 
     /**
@@ -35,11 +37,11 @@ class RegionController extends AdminController
      *
      * @return Content
      */
-    public function index(Content $content): Content
+    public function index(Content $content)
     {
         return Admin::content(function (Content $content) {
-            $content->header($this->title);
-            $content->description(trans('admin.description'));
+            $content->header(trans('svr-directories-lang::directories.countries_regions.title'));
+            $content->description(trans('svr-directories-lang::directories.countries_regions.description'));
             $content->body($this->grid());
         });
     }
@@ -49,11 +51,11 @@ class RegionController extends AdminController
      *
      * @param Content $content
      */
-    public function create(Content $content): Content
+    public function create(Content $content)
     {
         return Admin::content(function (Content $content) {
-            $content->header($this->title);
-            $content->description(trans('admin.create'));
+            $content->header(trans('svr-directories-lang::directories.countries_regions.title'));
+            $content->description(trans('svr-directories-lang::directories.countries_regions.create'));
             $content->body($this->form());
         });
     }
@@ -61,40 +63,41 @@ class RegionController extends AdminController
     /**
      * Edit interface.
      *
-     * @param string $id
+     * @param string  $id
      * @param Content $content
      *
      * @return Content
      */
-    public function edit($id, Content $content): Content
+    public function edit($id, Content $content)
     {
         return $content
-            ->title($this->title)
-            ->description(trans('admin.edit'))
+            ->title(trans('svr-directories-lang::directories.countries_regions.title'))
+            ->description(trans('svr-directories-lang::directories.countries_regions.edit'))
             ->row($this->form()->edit($id));
     }
 
     /**
-     * Show interface.
+     * Edit interface.
      *
-     * @param string $id
+     * @param string  $id
      * @param Content $content
      *
      * @return Content
      */
-    public function show($id, Content $content): Content
+    public function show($id, Content $content)
     {
         return $content
-            ->title($this->title)
-            ->description(trans('admin.show'))
-
-            // Оформление подсказок (xx_help)
-            ->css('.row .help-block {
-                font-size: .9rem;
-                color: #72777b
-            }')
+            ->title(__('svr-directories-lang::directories.countries_regions.title'))
+            ->description(__('svr-directories-lang::directories.countries_regions.description'))
             ->body($this->detail($id));
     }
+
+    /**
+     * Title for current resource.
+     *
+     * @var string
+     */
+    protected $title = 'Region';
 
     /**
      * Make a grid builder.
@@ -103,58 +106,54 @@ class RegionController extends AdminController
      */
     protected function grid(): Grid
     {
-        $grid = new Grid($this->model_obj);
-        foreach ($this->all_columns_obj as $key => $value) {
-            $value_name = $value['name'];
-            $value_label = strtoupper($value_name);
+        $directoryCountriesRegion = $this->directoryCountriesRegion;
+        $grid = new Grid(new DirectoryCountriesRegion);
+        $grid->column('region_id', __('svr-directories-lang::directories.countries_regions.region_id'))
+            ->help(__('region_id'))
+            ->sortable();
+        $grid->column('country_id', __('svr-directories-lang::directories.countries_regions.country_id'))
+            ->display(function ($country_id) {
+                $data = DirectoryCountries::pluck('country_name', 'country_id');
+                return ($data->get($country_id, '') !== '') ? "($country_id) $data[$country_id]" : 'not found';
+            })
+            ->help(__('country_id'))
+            ->sortable();
 
-            match ($value_name) {
-                // Индивидуальные настройки для отображения колонок:region_created_at, update_at, region_id
-                'region_id' => $grid->column($value_name, 'ID')->sortable(),
-
-                $this->model_obj->getCreatedAtColumn(), $this->model_obj->getUpdatedAtColumn() => $grid->column($value_name, $value_label)->display(function ($value) {
-                    return Carbon::parse($value)->format('Y-m-d / H:m:s');
-                })->help(trans(strtolower($this->trans.$value_name))),
-
-                // Отображение остальных колонок
-                default => $grid->column($value_name, $value_label)->help(trans(strtolower($this->trans.$value_name))),
-            };
-        }
-        // Настройки фильтров
-        $grid->filter(function (Grid\Filter $filter) {
-            $filter->equal('country_id', 'COUNTRY_ID')
-                ->select(function () {
-                    $data = DirectoryCountries::all()
-                        ->pluck('country_name', 'country_id');
-                    // к названию региона добавляем id
-                    foreach ($data as $key => $value) {
-                        $data[$key] = ' ( ' . $key . ' ) ' . $value;
-                    }
-                    return $data->all();
-                });
-            $filter->equal('region_status', 'REGION_STATUS')
-                ->select(function () {
-                    return SystemStatusEnum::get_option_list();
-                });
-
-            $filter->equal('region_status_delete', 'REGION_STATUS_DELETE')
-                ->select(function () {
-                    return SystemStatusDeleteEnum::get_option_list();
-                });
-
-        });
-
-        $grid->tools(function (Grid\Tools $tools) {
-            $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                $actions->disableDelete();
-            });
-        });
-        // Отключение кнопки создания
+        $grid->column('region_obl', __('svr-directories-lang::directories.countries_regions.region_obl'))
+            ->help(__('region_obl'))
+            ->sortable();
+        $grid->column(
+            'region_name', __('svr-directories-lang::directories.countries_regions.region_name')
+        )
+            ->help(__('region_name'))
+            ->sortable();
+        $grid->column(
+            'region_status', __('svr-directories-lang::directories.countries_regions.region_status')
+        )
+            ->help(__('region_status'))
+            ->sortable();
+        $grid->column(
+            'region_status_delete',
+            __('svr-directories-lang::directories.countries_regions.region_status_delete')
+        )
+            ->help(__('region_status_delete'))
+            ->sortable();
+        $grid->column('created_at', trans('svr-directories-lang::directories.created_at'))
+            ->help(__('created_at'))
+            ->display(function ($value) use ($directoryCountriesRegion) {
+                return Carbon::parse($value)->timezone(config('app.timezone'))->format(
+                    $directoryCountriesRegion->getDateFormat()
+                );
+            })->sortable();
+        $grid->column('updated_at', trans('svr-directories-lang::directories.updated_at'))
+            ->help(__('updated_at'))
+            ->display(function ($value) use ($directoryCountriesRegion) {
+                return Carbon::parse($value)->timezone(config('app.timezone'))->format(
+                    $directoryCountriesRegion->getDateFormat()
+                );
+            })->sortable();
         $grid->disableCreateButton();
-        // Отключение "удаление" у строк
-        $grid->actions(function (Grid\Displayers\Actions\Actions $actions) {
-            $actions->disableDelete();
-        });
+        $grid->disableExport();
 
         return $grid;
     }
@@ -163,34 +162,32 @@ class RegionController extends AdminController
      * Make a show builder.
      *
      * @param mixed $id
+     *
      * @return Show
      */
-    protected function detail($id): Show
+    protected function detail($id)
     {
-        $show = new Show($this->model::findOrFail($id));
-        foreach ($this->all_columns_obj as $key => $value) {
-            $value_name = $value['name'];
-            $value_label = $value_name;
-            $trans = trans(strtolower($this->trans . $value_name));
-            match ($value_name) {
-                // Индивидуальные настройки для отображения полей:created_at, update_at, raw_from_selex_beef_id
-                $this->model_obj->getCreatedAtColumn(), $this->model_obj->getUpdatedAtColumn() => $show
-                    ->field($value_name, $value_label)
-                    ->xx_datetime(),
+        $show = new Show(DirectoryCountriesRegion::findOrFail($id));
+        $show->field('region_id', __('svr-directories-lang::directories.countries_regions.region_id'));
+        $show->field('country_id', __('svr-directories-lang::directories.countries_regions.country_id'))
+            ->as(function ($country_id) {
+                $data = DirectoryCountries::pluck('country_name', 'country_id');
+                return ($data->has($country_id)) ? "($country_id) " . $data[$country_id] : 'not found';
+            });
+        $show->field('region_obl', __('svr-directories-lang::directories.countries_regions.region_obl'));
+        $show->field(
+            'region_name', __('svr-directories-lang::directories.countries_regions.region_name')
+        );
+        $show->field(
+            'region_status', __('svr-directories-lang::directories.countries_regions.region_status')
+        );
+        $show->field(
+            'region_status_delete',
+            __('svr-directories-lang::directories.countries_regions.region_status_delete')
+        );
+        $show->field('created_at', trans('svr-directories-lang::directories.created_at'));
+        $show->field('updated_at', trans('svr-directories-lang::directories.updated_at'));
 
-                'country_id' => $show->field('country_id', $value_label)
-                    ->xx_help(msg:$trans),
-
-                // Отображение остальных полей
-                default => $show->field($value_name, $value_label)
-                    ->xx_help(msg:$trans),
-            };
-        }
-        // Убрать кнопку "Удалить"
-        $show->panel()
-            ->tools(function ($tools) {
-                $tools->disableDelete();
-            });;
         return $show;
     }
 
@@ -199,52 +196,68 @@ class RegionController extends AdminController
      *
      * @return Form
      */
-    protected function form(): Form
+    protected function form()
     {
-        $form = new Form($this->model_obj);
-        $form->display('region_id', __('region_id'))
-            ->help(trans(strtolower($this->trans . 'region_id')));
-		$form->display('region_obl', __('region_obl'))
-            ->help(trans(strtolower($this->trans . 'region_obl')));
+        $form = new Form(new DirectoryCountriesRegion());
 
-        $form->select('country_id', __('country_id'))->options(function () {
-            $data = DirectoryCountries::all()->pluck('country_name', 'country_id');
-            // к названию региона добавляем id
-            foreach ($data as $key => $value) {
-                $data[$key] = ' ( ' . $key . ' ) ' . $value;
-            }
-            return $data->all();
+        $form->text('region_id', __('svr-directories-lang::directories.countries_regions.region_id'))
+            ->readonly(true)
+            ->help(__('region_id'));
+
+        $form->select('country_id', __('svr-directories-lang::directories.countries_regions.country_id'))
+            ->options(function ($id) {
+                return DirectoryCountries::pluck('country_name', 'country_id')
+                    ->mapWithKeys(function ($value, $key) {
+                        return [$key => "($key) $value"];
+                    })
+                    ->all();
             })
-            ->help(trans(strtolower($this->trans . 'country_id')))
-            ->rules('required', ['required' => trans('validation.required')]);
+            ->required()
 
-		$form->text('region_name', __('region_name'))
-            ->help(trans(strtolower($this->trans . 'region_name')))
-            ->rules('required|min:1|max:152', ['required' => trans('validation.required'), 'min' => trans('validation.min'), 'max' => trans('validation.max')]);
+            ->help(__('country_ngos'));
 
-        $form->select('region_status', __('region_status'))
+        $form->text('region_obl', __('svr-directories-lang::directories.countries_regions.region_obl'))
+            ->readonly(true)
+            ->required()
+            ->help(__('region_obl'));
+
+        $form->text('region_name', __('svr-directories-lang::directories.countries_regions.region_name'))
+            ->required()
+            ->help(__('region_name'));
+        $form->select(
+            'region_status', __('svr-directories-lang::directories.countries_regions.region_status')
+        )
             ->options(SystemStatusEnum::get_option_list())
-            ->help(trans(strtolower($this->trans . 'region_status')))
+            ->help(__('region_status'))
             ->default('enabled')
-            ->rules('required', ['required' => trans('validation.required')]);
+            ->required();
+        $form->select(
+            'region_status_delete',
+            trans('svr-directories-lang::directories.countries_regions.region_status_delete')
+        )
+            ->options(SystemStatusDeleteEnum::get_option_list())->default('active')
+            ->help(__('region_status_delete'))
+            ->required();
 
-        $form->select('region_status_delete', __('region_status_delete'))
-            ->options(SystemStatusDeleteEnum::get_option_list())
-            ->help(trans(strtolower($this->trans . 'region_status_delete')))
-            ->default('active')
-            ->rules('required', ['required' => trans('validation.required')]);
+        $form->datetime('created_at', __('svr-directories-lang::directories.created_at'))
+            ->help(__('created_at'))
+            ->disable();
+        $form->datetime('updated_at', __('svr-directories-lang::directories.updated_at'))
+            ->help(__('updated_at'))
+            ->disable();
 
-		$form->display('created_at', __('created_at'))
-            ->help(trans('svr.created_at'));
-		$form->display('updated_at', __('updated_at'))
-            ->help(trans('svr.updated_at'));
-
-        // Отключить "Продолжить создание"
-        $form->disableCreatingCheck();
-        // Отключить "Удалить"
-        $form->tools(function (Form\Tools $tools) {
-            $tools->disableDelete();
+        // обработка формы
+        $form->saving(function (Form $form) {
+            // создается текущая страница формы.
+            if ($form->isCreating()) {
+                (new DirectoryCountriesRegion)->countriesRegionCreate(request());
+            }
+            // обновляется текущая страница формы.
+            if ($form->isEditing()) {
+                (new DirectoryCountriesRegion)->countriesRegionUpdate(request());
+            }
         });
+
         return $form;
     }
 }

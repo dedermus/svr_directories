@@ -4,24 +4,30 @@ namespace Svr\Directories\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Svr\Core\Enums\SystemStatusDeleteEnum;
+use Svr\Core\Enums\SystemStatusEnum;
+use Svr\Directories\Models\DirectoryAnimalsSpecies;
 
 class DirectoryAnimalsBreeds extends Model
 {
     use HasFactory;
 
+    /**
+     * Точное название таблицы с учетом схемы
+     *
+     * @var string
+     */
+    protected $table = 'directories.animals_breeds';
 
-	/**
-	 * Точное название таблицы с учетом схемы
-	 * @var string
-	 */
-	protected $table								= 'directories.animals_breeds';
 
-
-	/**
-	 * Первичный ключ таблицы (автоинкремент)
-	 * @var string
-	 */
-	protected $primaryKey							= 'breed_id';
+    /**
+     * Первичный ключ таблицы (автоинкремент)
+     *
+     * @var string
+     */
+    protected $primaryKey = 'breed_id';
 
     /**
      * @var bool
@@ -29,64 +35,61 @@ class DirectoryAnimalsBreeds extends Model
     public $timestamps = true;
 
 
-	/**
-	 * Поле даты создания строки
-	 * @var string
-	 */
-	const CREATED_AT								= 'created_at';
+    /**
+     * Поле даты создания строки
+     *
+     * @var string
+     */
+    const CREATED_AT = 'created_at';
 
 
-	/**
-	 * Поле даты обновления строки
-	 * @var string
-	 */
-	const UPDATED_AT								= 'updated_at';
+    /**
+     * Поле даты обновления строки
+     *
+     * @var string
+     */
+    const UPDATED_AT = 'updated_at';
 
-	/**
-	 * Значения полей по умолчанию
-	 * @var array
-	 */
-	protected $attributes							= [
-		'breed_status'									=> 'enabled',
-		'breed_status_delete'							=> 'active',
-	];
+    /**
+     * Значения полей по умолчанию
+     *
+     * @var array
+     */
+    protected $attributes
+        = [
+            'breed_status'        => 'enabled',
+            'breed_status_delete' => 'active',
+        ];
 
-
-	/**
-	 * Поля, которые можно менять сразу массивом
-	 * @var array
-	 */
-	protected $fillable								= [
-		'breed_id',									// Идентификатор породы животных
-		'specie_id',								// Идентификатор вида животных
-		'breed_guid_self',							// GUID (наш, внутренний) породы животных
-		'breed_guid_horriot',						// GUID (хорриота) породы животных
-		'breed_uuid_horriot',						// UUID (хорриота) породы животных
-		'breed_name',								// Наименование породы животных
-		'breed_selex_code',							// Код породы животных  в Селэксе
-		'breed_status',								// Статус породы животных
-		'breed_status_delete',						// Статус удаления породы животных
-		'created_at',							    // Дата создания породы животных
-		'updated_at',								// дата последнего изменения строки записи */
-	];
-
-
-	/**
-	 * Поля, которые нельзя менять сразу массивом
-	 * @var array
-	 */
-	protected $guarded								= [
-		'breed_id',
-	];
+    /**
+     * Поля, которые можно менять сразу массивом
+     *
+     * @var array
+     */
+    protected $fillable
+        = [
+            'specie_id',                                // Идентификатор вида животных
+            'breed_guid_self',                          // GUID (наш, внутренний) породы животных
+            'breed_guid_horriot',                       // GUID (хорриота) породы животных
+            'breed_uuid_horriot',                       // UUID (хорриота) породы животных
+            'breed_name',                               // Наименование породы животных
+            'breed_selex_code',                         // Код породы животных  в Селэксе
+            'breed_status',                             // Статус породы животных
+            'breed_status_delete',                      // Статус удаления породы животных
+            'created_at',                               // Дата создания породы животных
+            'updated_at',                               // дата последнего изменения строки записи */
+        ];
 
 
-	/**
-	 * Массив системных скрытых полей
-	 * @var array
-	 */
-	protected $hidden								= [
-		'created_at',
-	];
+    /**
+     * Поля, которые нельзя менять сразу массивом
+     *
+     * @var array
+     */
+    protected $guarded
+        = [
+            'breed_id',                                  // Идентификатор породы животных
+        ];
 
     /**
      * Формат хранения столбцов даты модели.
@@ -95,115 +98,116 @@ class DirectoryAnimalsBreeds extends Model
      */
     protected $dateFormat = 'Y-m-d H:i:s';
 
-
-	/**
-	 * Вид животного
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    /**
+     * Вид животного
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-	public function specie()
-	{
-		return $this->belongsTo(DirectoryAnimalsSpecies::class, 'specie_id', 'specie_id');
-	}
+    public function specie()
+    {
+        return $this->belongsTo(DirectoryAnimalsSpecies::class, 'specie_id', 'specie_id');
+    }
 
     /**
      * Создать запись
      *
-     * @param $request
+     * @param Request $request
      *
      * @return void
      */
-    public function animalBreedCreate($request): void
+    public function animalBreedCreate(Request $request): void
     {
-        $this->rules($request);
-        $this->fill($request->all());
-        $this->save();
+        $this->validateRequest($request);
+        $this->fill($request->all())->save();
     }
 
     /**
      * Обновить запись
-     * @param $request
+     *
+     * @param Request $request
      *
      * @return void
      */
-    public function animalBreedUpdate($request): void
+    public function animalBreedUpdate(Request $request): void
     {
-        // валидация
-        $this->rules($request);
-        // получаем массив полей и значений и з формы
+        $this->validateRequest($request);
         $data = $request->all();
-        if (!isset($data[$this->primaryKey])) return;
-        // получаем id
-        $id = $data[$this->primaryKey];
-        // готовим сущность для обновления
-        $modules_data = $this->find($id);
-        // обновляем запись
-        $modules_data->update($data);
+        $id = $data[$this->primaryKey] ?? null;
+
+        if ($id) {
+            $breed = $this->find($id);
+            if ($breed) {
+                $breed->update($data);
+            }
+        }
     }
 
     /**
-     * Валидация входных данных
-     * @param $request
+     * Валидация запроса
+     * @param Request $request
      *
      * @return void
      */
-    private function rules($request): void
+    private function validateRequest(Request $request):void
     {
-        // получаем поля со значениями
-        $data = $request->all();
+        $rules = $this->getValidationRules($request);
+        $messages = $this->getValidationMessages();
+        $request->validate($rules, $messages);
+    }
 
-        // получаем значение первичного ключа
-        $id = (isset($data[$this->primaryKey])) ? $data[$this->primaryKey] : null;
+    /**
+     * Получить правила валидации
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function getValidationRules(Request $request): array
+    {
+        $id = $request->input($this->primaryKey);
+        $directoryAnimalsSpecies = new DirectoryAnimalsSpecies();
 
-        // id - Первичный ключ
-        if (!is_null($id)) {
-            $request->validate(
-                [$this->primaryKey => 'required|exists:.' . $this->getTable() . ',' . $this->primaryKey],
-                [$this->primaryKey => trans('svr-core-lang::validation.required')],
-            );
-        }
+        return [
+            $this->primaryKey     => [
+                $request->isMethod('put') ? 'required' : '',
+                Rule::exists('.' . $this->getTable(), $this->primaryKey),
+            ],
+            'specie_id'           => [
+                'required',
+                Rule::exists('.'.$directoryAnimalsSpecies->getTable(), $directoryAnimalsSpecies->primaryKey)],
+            'breed_guid_self'     => 'required|string|min:3|max:64',
+            'breed_guid_horriot'  => 'required|string|min:3|max:64',
+            'breed_uuid_horriot'  => 'required|string|min:3|max:64',
+            'breed_name'          => 'required|string|min:2|max:100',
+            'breed_selex_code'    => 'nullable|min_digits:1|max_digits:10',
+            'breed_status'        => [
+                'required',
+                Rule::enum(SystemStatusEnum::class),
+            ],
+            'breed_status_delete' => [
+                'required',
+                Rule::enum(SystemStatusDeleteEnum::class),
+            ],
+        ];
+    }
 
-        // specie_id - идентификатор видас
-        $request->validate(
-            ['specie_id' => 'required|exists:.directories.animals_species,specie_id'],
-            ['specie_id' => trans('svr-core-lang::validation')],
-        );
-
-        // breed_guid_self - Гуид в СВР
-        $request->validate(
-            ['breed_guid_self' => 'required|string|min:3|max:64'],
-            ['breed_guid_self' => trans('svr-core-lang::validation')],
-        );
-
-        // breed_guid_horriot - Гуид в хорриот
-        $request->validate(
-            ['breed_guid_horriot' => 'required|string|min:3|max:64'],
-            ['breed_guid_horriot' => trans('svr-core-lang::validation')],
-        );
-
-        // breed_uuid_horriot - ууид в хорриот
-        $request->validate(
-            ['breed_uuid_horriot' => 'required|string|min:3|max:64'],
-            ['breed_uuid_horriot' => trans('svr-core-lang::validation')],
-        );
-
-        // breed_name - имя породы
-        $request->validate(
-            ['breed_name' => 'required|string|min:2|max:100'],
-            ['breed_name' => trans('svr-core-lang::validation')],
-        );
-
-
-        // breed_status - Статус породы
-        $request->validate(
-            ['breed_status' => 'required'],
-            ['breed_status' => trans('svr-core-lang::validation')],
-        );
-
-        // breed_status_delete - Статус удаления породы
-        $request->validate(
-            ['breed_status_delete' => 'required'],
-            ['breed_status_delete' => trans('svr-core-lang::validation')],
-        );
+    /**
+     * Получить сообщения об ошибках валидации
+     *
+     * @return array
+     */
+    private function getValidationMessages(): array
+    {
+        return [
+            $this->primaryKey     => trans('svr-core-lang::validation.required'),
+            'specie_id'           => trans('svr-core-lang::validation'),
+            'breed_guid_self'     => trans('svr-core-lang::validation'),
+            'breed_guid_horriot'  => trans('svr-core-lang::validation'),
+            'breed_uuid_horriot'  => trans('svr-core-lang::validation'),
+            'breed_name'          => trans('svr-core-lang::validation'),
+            'breed_selex_code'    => trans('svr-core-lang::validation'),
+            'breed_status'        => trans('svr-core-lang::validation'),
+            'breed_status_delete' => trans('svr-core-lang::validation'),
+        ];
     }
 }

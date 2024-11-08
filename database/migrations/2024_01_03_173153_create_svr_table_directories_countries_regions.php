@@ -23,7 +23,7 @@ return new class extends Migration
                 $table->increments('region_id')->comment('Инкремент');
                 $table->integer('region_obl')->nullable(false)->comment('Внешний код региона');
                 $table->integer('country_id')->nullable(false)->comment('NGOS - внутренний код государства из таблицы DIRECTORY.COUNTRIES');
-                $table->string('region_name', 152)->nullable(false);
+                $table->string('region_name', 152)->nullable(false)->comment('Название региона/области');
                 $table->addColumn('system.system_status', 'region_status')->nullable(true)->default('enabled')->comment('Статус записи');
                 $table->addColumn('system.system_status_delete', 'region_status_delete')->nullable(true)->default('active')->comment('Статус удаления записи');
                 // Это поля "created_at" и "updated_at".

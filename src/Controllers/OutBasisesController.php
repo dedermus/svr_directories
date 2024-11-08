@@ -2,6 +2,7 @@
 
 namespace Svr\Directories\Controllers;
 
+use Illuminate\Support\Carbon;
 use OpenAdminCore\Admin\Facades\Admin;
 use OpenAdminCore\Admin\Controllers\AdminController;
 use OpenAdminCore\Admin\Form;
@@ -14,6 +15,21 @@ use Svr\Directories\Models\DirectoryOutBasises;
 
 class OutBasisesController extends AdminController
 {
+    /**
+     * Экземпляр класса модели
+     *
+     * @var DirectoryOutBasises
+     */
+    private DirectoryOutBasises $directoryOutBasises;
+
+    /**
+     * Конструктор
+     */
+    public function __construct()
+    {
+        $this->directoryOutBasises = new DirectoryOutBasises();
+    }
+
     /**
      * Index interface.
      *
@@ -88,14 +104,44 @@ class OutBasisesController extends AdminController
      */
     protected function grid(): Grid
     {
+        $directoryOutBasises = $this->directoryOutBasises;
         $grid = new Grid(new DirectoryOutBasises());
-        $grid->column('out_basis_id', __('svr-directories-lang::directories.out_basises.out_basis_id'))->sortable();
-		$grid->column('out_basis_guid_self', __('svr-directories-lang::directories.guid_self'))->sortable();
-		$grid->column('out_basis_value_horriot', __('svr-directories-lang::directories.value_horriot'))->sortable();
-		$grid->column('out_basis_name', __('svr-directories-lang::directories.out_basises.out_basis_name'))->sortable();
-		$grid->column('out_basis_selex_code', __('svr-directories-lang::directories.selex_code'))->sortable();
-		$grid->column('out_basis_status', __('svr-directories-lang::directories.item_status'))->sortable();
-		$grid->column('out_basis_status_delete', __('svr-directories-lang::directories.item_status_delete'))->sortable();
+        $grid->column('out_basis_id', __('svr-directories-lang::directories.out_basises.out_basis_id'))
+            ->help(__('out_basis_id'))
+            ->sortable();
+		$grid->column('out_basis_guid_self', __('svr-directories-lang::directories.guid_self'))
+            ->help(__('out_basis_guid_self'))
+            ->sortable();
+		$grid->column('out_basis_value_horriot', __('svr-directories-lang::directories.value_horriot'))
+            ->help(__('out_basis_value_horriot'))
+            ->sortable();
+		$grid->column('out_basis_name', __('svr-directories-lang::directories.out_basises.out_basis_name'))
+            ->help(__('out_basis_name'))
+            ->sortable();
+		$grid->column('out_basis_selex_code', __('svr-directories-lang::directories.selex_code'))
+            ->help(__('out_basis_selex_code'))
+            ->sortable();
+		$grid->column('out_basis_status', __('svr-directories-lang::directories.item_status'))
+            ->help(__('out_basis_status'))
+            ->sortable();
+		$grid->column('out_basis_status_delete', __('svr-directories-lang::directories.item_status_delete'))
+            ->help(__('out_basis_status_delete'))
+            ->sortable();
+        $grid->column('created_at', trans('svr-directories-lang::directories.created_at'))
+            ->help(__('created_at'))
+            ->display(function ($value) use ($directoryOutBasises) {
+                return Carbon::parse($value)->timezone(config('app.timezone'))->format(
+                    $directoryOutBasises->getDateFormat()
+                );
+            })->sortable();
+        $grid->column('updated_at', trans('svr-directories-lang::directories.updated_at'))
+            ->help(__('updated_at'))
+            ->display(function ($value) use ($directoryOutBasises) {
+                return Carbon::parse($value)->timezone(config('app.timezone'))->format(
+                    $directoryOutBasises->getDateFormat()
+                );
+            })->sortable();
+
 
 		$grid->disableCreateButton();
 		$grid->disableExport();
@@ -120,6 +166,8 @@ class OutBasisesController extends AdminController
         $show->field('out_basis_selex_code', __('svr-directories-lang::directories.selex_code'));
         $show->field('out_basis_status', __('svr-directories-lang::directories.item_status'));
         $show->field('out_basis_status_delete', __('svr-directories-lang::directories.item_status_delete'));
+        $show->field('created_at', trans('svr-directories-lang::directories.created_at'));
+        $show->field('updated_at', trans('svr-directories-lang::directories.updated_at'));
 
         return $show;
     }
@@ -135,29 +183,35 @@ class OutBasisesController extends AdminController
 
 		$form->text('out_basis_id', __('svr-directories-lang::directories.out_basises.out_basis_id'))
 			->readonly(true)
-			->help(__('svr-directories-lang::directories.out_basises.out_basis_id'));
+			->help(__('out_basis_id'));
 		$form->text('out_basis_guid_self', __('svr-directories-lang::directories.guid_self'))
 			->readonly(true)
 			->required()
-			->help(__('svr-directories-lang::directories.guid_self'));
+			->help(__('guid_self'));
 		$form->text('out_basis_value_horriot', __('svr-directories-lang::directories.value_horriot'))
 			->readonly(true)
 			->required()
-			->help(__('svr-directories-lang::directories.value_horriot'));
+			->help(__('value_horriot'));
 		$form->text('out_basis_name', __('svr-directories-lang::directories.out_basises.out_basis_name'))
 			->required()
-			->help(__('svr-directories-lang::directories.out_basises.out_basis_name'));
+			->help(__('out_basis_name'));
 		$form->text('out_basis_selex_code', __('svr-directories-lang::directories.selex_code'))
-			->help(__('svr-directories-lang::directories.selex_code'));
+			->help(__('selex_code'));
 		$form->select('out_basis_status', __('svr-directories-lang::directories.item_status'))
+            ->help(__('out_basis_status'))
 			->options(SystemStatusEnum::get_option_list())
 			->default('enabled')->required();
 		$form->select('out_basis_status_delete', trans('svr-directories-lang::directories.item_status_delete'))
+            ->help(__('out_basis_status_delete'))
 			->options(SystemStatusDeleteEnum::get_option_list())->default('active')
-			->readonly(true)->required();
+			->required();
 
-        $form->date('created_at', __('svr-directories-lang::directories.created_at'));
-        $form->date('updated_at', __('svr-directories-lang::directories.updated_at'));
+        $form->datetime('created_at', __('svr-directories-lang::directories.created_at'))
+            ->help(__('created_at'))
+            ->disable();
+        $form->datetime('updated_at', __('svr-directories-lang::directories.updated_at'))
+            ->help(__('updated_at'))
+            ->disable();
 
         // обработка формы
         $form->saving(function (Form $form)

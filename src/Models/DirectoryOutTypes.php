@@ -4,6 +4,11 @@ namespace Svr\Directories\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Svr\Core\Enums\SystemStatusDeleteEnum;
+use Svr\Core\Enums\SystemStatusEnum;
 
 class DirectoryOutTypes extends Model
 {
@@ -73,15 +78,6 @@ class DirectoryOutTypes extends Model
 		'out_type_id',
 	];
 
-
-	/**
-	 * Массив системных скрытых полей
-	 * @var array
-	 */
-	protected $hidden								= [
-		'created_at',
-	];
-
     /**
      * @var array|string[]
      */
@@ -103,103 +99,93 @@ class DirectoryOutTypes extends Model
      */
     public $timestamps = true;
 
-	/**
-	 * Преобразование полей при чтении/записи
-	 * @return array
-	 */
-	protected function casts(): array
-	{
-		return [
-//			'update_at'								=> 'timestamp',
-//			'out_type_created_at'					=> 'timestamp',
-		];
-	}
-
     /**
      * Создать запись
      *
-     * @param $request
+     * @param Request $request
      *
      * @return void
      */
-    public function outTypeCreate($request): void
+    public function outTypeCreate(Request $request): void
     {
-        $this->rules($request);
-        $this->fill($request->all());
-        $this->save();
+        $this->validateRequest($request);
+        $this->fill($request->all())->save();
     }
 
     /**
      * Обновить запись
-     * @param $request
+     * @param Request $request
      *
      * @return void
      */
-    public function outTypeUpdate($request): void
+    public function outTypeUpdate(Request $request): void
     {
-        // валидация
-        $this->rules($request);
-        // получаем массив полей и значений и з формы
+        $this->validateRequest($request);
         $data = $request->all();
-        if (!isset($data[$this->primaryKey])) return;
-        // получаем id
-        $id = $data[$this->primaryKey];
-        // готовим сущность для обновления
-        $modules_data = $this->find($id);
-        // обновляем запись
-        $modules_data->update($data);
+        $id = $data[$this->primaryKey] ?? null;
+
+        if ($id) {
+            $outType = $this->find($id);
+            if ($outType) {
+                $outType->update($data);
+            }
+        }
     }
 
     /**
-     * Валидация входных данных
-     * @param $request
-     *
-     * @return void
+     * Валидация запроса
+     * @param Request $request
      */
-    private function rules($request): void
+    private function validateRequest(Application|Request $request)
     {
-        // получаем поля со значениями
-        $data = $request->all();
+        $rules = $this->getValidationRules($request);
+        $messages = $this->getValidationMessages();
+        $request->validateWithBag('default', $rules, $messages);
+    }
 
-        // получаем значение первичного ключа
-        $id = (isset($data[$this->primaryKey])) ? $data[$this->primaryKey] : null;
+    /**
+     * Получить правила валидации
+     * @param Request $request
+     * @return array
+     */
+    private function getValidationRules(Request $request): array
+    {
+        $id = $request->input($this->primaryKey);
 
-        // id - Первичный ключ
-        if (!is_null($id)) {
-            $request->validate(
-                [$this->primaryKey => 'required|exists:.' . $this->getTable() . ',' . $this->primaryKey],
-                [$this->primaryKey => trans('svr-core-lang::validation.required')],
-            );
-        }
+        return [
+            $this->primaryKey => [
+                $request->isMethod('put') ? 'required' : '',
+                Rule::exists('.'.$this->getTable(), $this->primaryKey),
+            ],
+            'out_type_guid_self' => 'required|string|min:3|max:64',
+            'out_type_value_horriot' => 'required|string|min:3|max:64',
+            'out_type_name' => 'required|string|min:2|max:100',
+            'out_type_selex_code' => 'nullable|string|max:64',
+            'out_type_status' => [
+                'required',
+                Rule::enum(SystemStatusEnum::class),
+            ],
+            'out_type_status_delete' => [
+                'required',
+                Rule::enum(SystemStatusDeleteEnum::class),
+            ],
+        ];
+    }
 
-        // out_type_guid_self - Гуид в СВР
-        $request->validate(
-            ['out_type_guid_self' => 'required|string|min:3|max:64'],
-            ['out_type_guid_self' => trans('svr-core-lang::validation')],
-        );
-
-        // out_type_value_horriot - значение в хорриот
-        $request->validate(
-            ['out_type_value_horriot' => 'required|string|min:3|max:64'],
-            ['out_type_value_horriot' => trans('svr-core-lang::validation')],
-        );
-
-        // out_type_name - имя
-        $request->validate(
-            ['out_type_name' => 'required|string|min:2|max:100'],
-            ['out_type_name' => trans('svr-core-lang::validation')],
-        );
-
-        // out_type_status - Статус
-        $request->validate(
-            ['out_type_status' => 'required'],
-            ['out_type_status' => trans('svr-core-lang::validation')],
-        );
-
-        // out_type_status_delete - Статус удаления
-        $request->validate(
-            ['out_type_status_delete' => 'required'],
-            ['out_type_status_delete' => trans('svr-core-lang::validation')],
-        );
+    /**
+     * Получить сообщения об ошибках валидации
+     * @return array
+     */
+    private function getValidationMessages(): array
+    {
+        return [
+            $this->primaryKey => trans('svr-core-lang::validation.required'),
+            'out_type_guid_self' => trans('svr-core-lang::validation'),
+            'out_type_value_horriot' => trans('svr-core-lang::validation'),
+            'out_type_name' => trans('svr-core-lang::validation'),
+            'out_type_selex_code' => trans('svr-core-lang::validation'),
+            'out_type_status' => trans('svr-core-lang::validation'),
+            'out_type_status_delete' => trans('svr-core-lang::validation'),
+        ];
     }
 }

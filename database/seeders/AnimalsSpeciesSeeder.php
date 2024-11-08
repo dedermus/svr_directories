@@ -396,6 +396,6 @@ class AnimalsSpeciesSeeder extends Seeder
                 "specie_status_delete" => "active",
             ]
         ]);
-
+        DB::statement("SELECT setval('system.animals_species_specie_id_seq', (SELECT MAX(specie_id) from directories.animals_species))");
     }
 }

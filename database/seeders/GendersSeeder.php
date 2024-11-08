@@ -48,6 +48,6 @@ class GendersSeeder extends Seeder
                 "gender_status_delete" => "active",
             ]
         ]);
-
+        DB::statement("SELECT setval('system.genders_gender_id_seq', (SELECT MAX(gender_id) from directories.genders))");
     }
 }

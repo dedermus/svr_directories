@@ -5150,6 +5150,6 @@ class CountriesSeeder extends Seeder
                 "updated_at" => "2024-09-19 00:10:01.671988"
             ]
         ]);
-
+        DB::statement("SELECT setval('system.countries_country_id_seq', (SELECT MAX(country_id) from directories.countries))");
     }
 }

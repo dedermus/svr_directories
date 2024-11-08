@@ -15,6 +15,7 @@ use Svr\Directories\Controllers\KeepingPurposesController;
 use Svr\Directories\Controllers\KeepingTypesController;
 use Svr\Directories\Controllers\MarkStatusesController;
 use Svr\Directories\Controllers\MarkToolTypesController;
+use Svr\Directories\Controllers\MarkTypesController;
 use Svr\Directories\Controllers\OutBasisesController;
 use Svr\Directories\Controllers\OutTypesController;
 use Svr\Directories\Controllers\RegionController;
@@ -62,6 +63,8 @@ class DirectoriesManager extends Extension
             $router->resource('directories/keeping_types', KeepingTypesController::class);
             // виды маркирования
             $router->resource('directories/mark_statuses', MarkStatusesController::class);
+            // виды номеров
+            $router->resource('directories/mark_types', MarkTypesController::class);
             // типы маркирования
             $router->resource('directories/mark_tool_types', MarkToolTypesController::class);
             // основания выбытия животного
@@ -136,6 +139,11 @@ class DirectoriesManager extends Extension
                     'title'     => 'Виды маркирования',
                     'icon'      => 'icon-receipt',
                     'uri'       => 'directories/mark_statuses',
+                ],
+                [
+                    'title'     => 'Виды номеров',
+                    'icon'      => 'icon-receipt',
+                    'uri'       => 'directories/mark_types',
                 ],
                 [
                     'title'     => 'Типы маркирования',

@@ -2,6 +2,7 @@
 
 namespace Svr\Directories\Controllers;
 
+use Illuminate\Support\Carbon;
 use OpenAdminCore\Admin\Facades\Admin;
 use OpenAdminCore\Admin\Controllers\AdminController;
 use OpenAdminCore\Admin\Form;
@@ -14,6 +15,20 @@ use Svr\Directories\Models\DirectoryMarkTypes;
 
 class MarkTypesController extends AdminController
 {
+    /**
+     * Экземпляр класса модели
+     *
+     * @var DirectoryMarkTypes
+     */
+    private DirectoryMarkTypes $directoryMarkTypes;
+
+    /**
+     * Конструктор
+     */
+    public function __construct()
+    {
+        $this->directoryMarkTypes = new DirectoryMarkTypes();
+    }
     /**
      * Index interface.
      *
@@ -88,15 +103,43 @@ class MarkTypesController extends AdminController
      */
     protected function grid(): Grid
     {
+        $directoryMarkTypes = $this->directoryMarkTypes;
         $grid = new Grid(new DirectoryMarkTypes());
-        $grid->column('mark_type_id', __('svr-directories-lang:directories.mark_types.mark_type_id'))->sortable();
-		$grid->column('mark_type_guid_self', __('svr-directories-lang:directories.guid_self'))->sortable();
-		$grid->column('mark_type_value_horriot', __('svr-directories-lang:directories.value_horriot'))->sortable();
-		$grid->column('mark_type_name', __('svr-directories-lang:directories.mark_types.mark_type_name'))->sortable();
-		$grid->column('mark_type_selex_code', __('svr-directories-lang:directories.selex_code'))->sortable();
-		$grid->column('mark_type_status', __('svr-directories-lang:directories.item_status'))->sortable();
-		$grid->column('mark_type_status_delete', __('svr-directories-lang:directories.item_status_delete'))->sortable();
-
+        $grid->column('mark_type_id', __('svr-directories-lang:directories.mark_types.mark_type_id'))
+            ->help(__('mark_type_id'))
+            ->sortable();
+		$grid->column('mark_type_guid_self', __('svr-directories-lang:directories.guid_self'))
+            ->help(__('mark_type_guid_self'))
+            ->sortable();
+		$grid->column('mark_type_value_horriot', __('svr-directories-lang:directories.value_horriot'))
+            ->help(__('mark_type_value_horriot'))
+            ->sortable();
+		$grid->column('mark_type_name', __('svr-directories-lang:directories.mark_types.mark_type_name'))
+            ->help(__('mark_type_name'))
+            ->sortable();
+		$grid->column('mark_type_selex_code', __('svr-directories-lang:directories.selex_code'))
+            ->help(__('mark_type_selex_code'))
+            ->sortable();
+		$grid->column('mark_type_status', __('svr-directories-lang:directories.item_status'))
+            ->help(__('mark_type_status'))
+            ->sortable();
+		$grid->column('mark_type_status_delete', __('svr-directories-lang:directories.item_status_delete'))
+            ->help(__('mark_type_status_delete'))
+            ->sortable();
+        $grid->column('created_at', trans('svr-directories-lang::directories.created_at'))
+            ->help(__('created_at'))
+            ->display(function ($value) use ($directoryMarkTypes) {
+                return Carbon::parse($value)->timezone(config('app.timezone'))->format(
+                    $directoryMarkTypes->getDateFormat()
+                );
+            })->sortable();
+        $grid->column('updated_at', trans('svr-directories-lang::directories.updated_at'))
+            ->help(__('updated_at'))
+            ->display(function ($value) use ($directoryMarkTypes) {
+                return Carbon::parse($value)->timezone(config('app.timezone'))->format(
+                    $directoryMarkTypes->getDateFormat()
+                );
+            })->sortable();
 		$grid->disableCreateButton();
 		$grid->disableExport();
 
@@ -120,6 +163,8 @@ class MarkTypesController extends AdminController
         $show->field('mark_type_selex_code', __('svr-directories-lang:directories.selex_code'));
         $show->field('mark_type_status', __('svr-directories-lang:directories.item_status'));
         $show->field('mark_type_status_delete', __('svr-directories-lang:directories.item_status_delete'));
+        $show->field('created_at', trans('svr-directories-lang::directories.created_at'));
+        $show->field('updated_at', trans('svr-directories-lang::directories.updated_at'));
 
         return $show;
     }
@@ -135,29 +180,34 @@ class MarkTypesController extends AdminController
 
 		$form->text('mark_type_id', __('svr-directories-lang:directories.mark_types.mark_type_id'))
 			->readonly(true)
-			->help(__('svr-directories-lang:directories.mark_types.mark_type_id'));
+			->help(__('mark_type_id'));
 		$form->text('mark_type_guid_self', __('svr-directories-lang:directories.guid_self'))
 			->readonly(true)
 			->required()
-			->help(__('svr-directories-lang:directories.guid_self'));
+			->help(__('mark_type_guid_self'));
 		$form->text('mark_type_value_horriot', __('svr-directories-lang:directories.value_horriot'))
 			->readonly(true)
 			->required()
-			->help(__('svr-directories-lang:directories.value_horriot'));
+			->help(__('mark_type_value_horriot'));
 		$form->text('mark_type_name', __('svr-directories-lang:directories.mark_types.mark_type_name'))
 			->required()
-			->help(__('svr-directories-lang:directories.mark_types.mark_type_name'));
+			->help(__('mark_type_name'));
 		$form->text('mark_type_selex_code', __('svr-directories-lang:directories.selex_code'))
-			->help(__('svr-directories-lang:directories.selex_code'));
+			->help(__('mark_type_selex_code'));
 		$form->select('mark_type_status', __('svr-directories-lang:directories.item_status'))
 			->options(SystemStatusEnum::get_option_list())
+            ->help(__('mark_type_status'))
 			->default('enabled')->required();
 		$form->select('mark_type_status_delete', trans('svr-directories-lang:directories.item_status_delete'))
 			->options(SystemStatusDeleteEnum::get_option_list())->default('active')
-			->readonly(true)->required();
-
-        $form->date('created_at', __('svr-directories-lang:directories.created_at'));
-        $form->date('updated_at', __('svr-directories-lang:directories.updated_at'));
+            ->help(__('mark_type_status_delete'))
+			->required();
+        $form->datetime('created_at', __('svr-directories-lang::directories.created_at'))
+            ->help(__('created_at'))
+            ->disable();
+        $form->datetime('updated_at', __('svr-directories-lang::directories.updated_at'))
+            ->help(__('updated_at'))
+            ->disable();
 
         // обработка формы
         $form->saving(function (Form $form)
