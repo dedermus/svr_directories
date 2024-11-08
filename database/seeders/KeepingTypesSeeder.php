@@ -293,6 +293,6 @@ class KeepingTypesSeeder extends Seeder
                 "updated_at"                 => Carbon::now()->format('Y-m-d H:i:s'),
             ]
         ]);
-        DB::statement("SELECT setval('system.keeping_types_keeping_type_id_seq', (SELECT MAX(specie_id) from directories.keeping_types))");
+        DB::statement("SELECT setval('directories.keeping_types_keeping_type_id_seq', (SELECT MAX(specie_id) from directories.keeping_types))");
     }
 }

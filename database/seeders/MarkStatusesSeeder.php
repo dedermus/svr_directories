@@ -35,6 +35,6 @@ class MarkStatusesSeeder extends Seeder
                 "updated_at"              => Carbon::now()->format('Y-m-d H:i:s'),
             ]
         ]);
-        DB::statement("SELECT setval('system.mark_statuses_mark_status_id_seq', (SELECT MAX(mark_status_id) from directories.mark_statuses))");
+        DB::statement("SELECT setval('directories.mark_statuses_mark_status_id_seq', (SELECT MAX(mark_status_id) from directories.mark_statuses))");
     }
 }

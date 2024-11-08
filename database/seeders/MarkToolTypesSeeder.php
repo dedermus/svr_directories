@@ -143,6 +143,6 @@ class MarkToolTypesSeeder extends Seeder
                 "updated_at"              => Carbon::now()->format('Y-m-d H:i:s'),
             ]
         ]);
-        DB::statement("SELECT setval('system.mark_tool_types_mark_tool_type_id_seq', (SELECT MAX(mark_tool_type_id) from directories.mark_tool_types))");
+        DB::statement("SELECT setval('directories.mark_tool_types_mark_tool_type_id_seq', (SELECT MAX(mark_tool_type_id) from directories.mark_tool_types))");
     }
 }

@@ -187,6 +187,6 @@ class OutBasisesSeeder extends Seeder
                 "updated_at"             => Carbon::now()->format('Y-m-d H:i:s'),
             ]
         ]);
-        DB::statement("SELECT setval('system.out_basises_out_basis_id_seq', (SELECT MAX(out_basis_id) from directories.out_basises))");
+        DB::statement("SELECT setval('directories.out_basises_out_basis_id_seq', (SELECT MAX(out_basis_id) from directories.out_basises))");
     }
 }

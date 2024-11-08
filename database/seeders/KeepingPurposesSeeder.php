@@ -247,6 +247,6 @@ class KeepingPurposesSeeder extends Seeder
                 "updated_at"                    => Carbon::now()->format('Y-m-d H:i:s'),
             ]
         ]);
-        DB::statement("SELECT setval('system.keeping_purposes_keeping_purpose_id_seq', (SELECT MAX(keeping_purpose_id) from directories.keeping_purposes))");
+        DB::statement("SELECT setval('directories.keeping_purposes_keeping_purpose_id_seq', (SELECT MAX(keeping_purpose_id) from directories.keeping_purposes))");
     }
 }
