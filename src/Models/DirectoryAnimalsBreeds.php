@@ -8,10 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
+use Svr\Core\Traits\GetTableName;
 use Svr\Directories\Models\DirectoryAnimalsSpecies;
 
 class DirectoryAnimalsBreeds extends Model
 {
+    use GetTableName;
     use HasFactory;
 
     /**

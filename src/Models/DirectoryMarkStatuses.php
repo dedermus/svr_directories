@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
+use Svr\Core\Traits\GetTableName;
 
 class DirectoryMarkStatuses extends Model
 {
+    use GetTableName;
     use HasFactory;
 
 	/**
