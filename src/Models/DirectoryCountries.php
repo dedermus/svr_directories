@@ -5,6 +5,7 @@ namespace Svr\Directories\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
@@ -15,12 +16,6 @@ class DirectoryCountries extends Model
 {
     use GetTableName;
     use HasFactory;
-
-    /**
-     * Количество записей из запроса
-     * @var int
-     */
-    public int $countries_count = 0;
 
     /**
      * Точное название таблицы с учетом схемы
@@ -230,14 +225,14 @@ class DirectoryCountries extends Model
      * @param $search_data
      * @return array
      */
-    public function countriesList($per_page, $cur_page, $search_data): array
+    public static function countriesList($per_page, $cur_page, $search_data): array
     {
-        $where_array = [['country_status', '=', 'enabled'], ['country_status_delete', '=', 'active']];
+        $where_array = [['country_status', '=', SystemStatusEnum::ENABLED->value], ['country_status_delete', '=', SystemStatusDeleteEnum::ACTIVE->value]];
 
         if (isset($search_data['country_name'])) $where_array[] = ['country_name', 'ilike', '%'.$search_data['country_name'].'%'];
 
-        $this->countries_count = DB::table($this->table)->where($where_array)->count();
+        Config::set('total_records', DB::table(self::getTableName())->where($where_array)->count());
 
-        return DB::table($this->table)->where($where_array)->limit($per_page)->offset($per_page*($cur_page-1))->get()->toArray();
+        return DB::table(self::getTableName())->where($where_array)->limit($per_page)->offset($per_page*($cur_page-1))->get()->toArray();
     }
 }

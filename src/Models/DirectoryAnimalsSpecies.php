@@ -5,6 +5,7 @@ namespace Svr\Directories\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
@@ -15,12 +16,6 @@ class DirectoryAnimalsSpecies extends Model
 {
     use GetTableName;
     use HasFactory;
-
-    /**
-     * Количество записей из запроса
-     * @var int
-     */
-    public int $species_count = 0;
 
     /**
      * Точное название таблицы с учетом схемы
@@ -213,14 +208,14 @@ class DirectoryAnimalsSpecies extends Model
      * @param $search_data
      * @return array
      */
-    public function speciesList($per_page, $cur_page, $search_data): array
+    public static function speciesList($per_page, $cur_page, $search_data): array
     {
-        $where_array = [['specie_status', '=', 'enabled'], ['specie_status_delete', '=', 'active']];
+        $where_array = [['specie_status', '=', SystemStatusEnum::ENABLED->value], ['specie_status_delete', '=', SystemStatusDeleteEnum::ACTIVE->value]];
 
         if (isset($search_data['specie_name'])) $where_array[] = ['specie_name', 'ilike', '%'.$search_data['specie_name'].'%'];
 
-        $this->species_count = DB::table($this->table)->where($where_array)->count();
+        Config::set('total_records', DB::table(self::getTableName())->where($where_array)->count());
 
-        return DB::table($this->table)->where($where_array)->limit($per_page)->offset($per_page*($cur_page-1))->get()->toArray();
+        return DB::table(self::getTableName())->where($where_array)->limit($per_page)->offset($per_page*($cur_page-1))->get()->toArray();
     }
 }

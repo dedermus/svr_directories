@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -26,6 +27,7 @@ use Svr\Data\Resources\SvrApiAnimalsListMarkResource;
 use Svr\Data\Resources\SvrApiAnimalsListResource;
 use Svr\Data\Resources\SvrApiBreedsListResource;
 use Svr\Data\Resources\SvrApiCountriesListResource;
+use Svr\Data\Resources\SvrApiRegionsListResource;
 use Svr\Data\Resources\SvrApiSpeciesListResource;
 use Svr\Directories\Models\DirectoryAnimalsBreeds;
 use Svr\Directories\Models\DirectoryAnimalsSpecies;
@@ -63,9 +65,7 @@ class ApiDirectoriesController extends Controller
 
         $user = auth()->user();
 
-        $model = new DirectoryAnimalsSpecies();
-        $items_list = $model->speciesList($user['pagination_per_page'], $user['pagination_cur_page'], $valid_data);
-        $items_count = $model->species_count;
+        $items_list = DirectoryAnimalsSpecies::speciesList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
 
         if(!$items_list OR count($items_list) < 1)
         {
@@ -80,11 +80,6 @@ class ApiDirectoriesController extends Controller
             'message' => '',
             'response_resource_data' => SvrApiSpeciesListResource::class,
             'response_resource_dictionary' => false,
-            'pagination' => [
-                'total_records' => $items_count,
-                'cur_page' => $user['pagination_cur_page'],
-                'per_page' => $user['pagination_per_page']
-            ],
         ]);
 
         //отдаем ресурс с ответом
@@ -114,9 +109,7 @@ class ApiDirectoriesController extends Controller
 
         $user = auth()->user();
 
-        $model = new DirectoryAnimalsBreeds();
-        $items_list = $model->breedsList($user['pagination_per_page'], $user['pagination_cur_page'], $valid_data);
-        $items_count = $model->breeds_count;
+        $items_list = DirectoryAnimalsBreeds::breedsList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
 
         if(!$items_list OR count($items_list) < 1)
         {
@@ -130,12 +123,7 @@ class ApiDirectoriesController extends Controller
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiBreedsListResource::class,
-            'response_resource_dictionary' => false,
-            'pagination' => [
-                'total_records' => $items_count,
-                'cur_page' => $user['pagination_cur_page'],
-                'per_page' => $user['pagination_per_page']
-            ],
+            'response_resource_dictionary' => false
         ]);
 
         //отдаем ресурс с ответом
@@ -150,9 +138,10 @@ class ApiDirectoriesController extends Controller
      */
     public function directoriesCountries(Request $request): SvrApiResponseResource|JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'country_name' => ['string'],
-        ],
+        $validator = Validator::make($request->all(),
+            [
+                'country_name' => ['string'],
+            ],
             [
                 'country_name' => trans('svr-core-lang::validation')
             ]);
@@ -161,9 +150,7 @@ class ApiDirectoriesController extends Controller
 
         $user = auth()->user();
 
-        $model = new DirectoryCountries();
-        $items_list = $model->countriesList($user['pagination_per_page'], $user['pagination_cur_page'], $valid_data);
-        $items_count = $model->countries_count;
+        $items_list = DirectoryCountries::countriesList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
 
         if(!$items_list OR count($items_list) < 1)
         {
@@ -178,11 +165,50 @@ class ApiDirectoriesController extends Controller
             'message' => '',
             'response_resource_data' => SvrApiCountriesListResource::class,
             'response_resource_dictionary' => false,
-            'pagination' => [
-                'total_records' => $items_count,
-                'cur_page' => $user['pagination_cur_page'],
-                'per_page' => $user['pagination_per_page']
+        ]);
+
+        //отдаем ресурс с ответом
+        return new SvrApiResponseResource($data);
+    }
+
+    /**
+     * Справочники регионов
+     * @param Request $request
+     * @return JsonResponse|SvrApiResponseResource
+     * @throws Exception
+     */
+    public function directoriesRegions(Request $request): SvrApiResponseResource|JsonResponse
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'country_id'     => ['int', Rule::exists(DirectoryCountries::getTableName(), 'country_id')],
+                'region_name'    => ['string'],
             ],
+            [
+                'country_id'     => trans('svr-core-lang::validation'),
+                'region_name'    => trans('svr-core-lang::validation')
+            ]
+        );
+
+        $valid_data = $validator->validated();
+
+        $user = auth()->user();
+
+        $items_list = DirectoryCountriesRegion::regionsList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
+
+        if(!$items_list OR count($items_list) < 1)
+        {
+            throw new CustomException('Не найдены регионы');
+        }
+
+        //складываем все в коллекцию
+        $data = collect([
+            'user_id' => $user['user_id'],
+            'regions_list' => collect($items_list),
+            'status' => true,
+            'message' => '',
+            'response_resource_data' => SvrApiRegionsListResource::class,
+            'response_resource_dictionary' => false,
         ]);
 
         //отдаем ресурс с ответом

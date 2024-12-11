@@ -14,7 +14,7 @@ Route::prefix(config('svr.api_prefix'))->group(function(){
     Route::get('directories/species', [ApiDirectoriesController::class, 'directoriesSpecies'])->middleware(['auth:svr_api', 'api']);
     Route::get('directories/breeds', [ApiDirectoriesController::class, 'directoriesBreeds'])->middleware(['auth:svr_api', 'api']);
     Route::get('directories/countries', [ApiDirectoriesController::class, 'directoriesCountries'])->middleware(['auth:svr_api', 'api']);
-    Route::get('directories/regions', [ApiDirectoriesController::class, 'applicationsStatus'])->middleware(['auth:svr_api', 'api']);
+    Route::get('directories/regions', [ApiDirectoriesController::class, 'directoriesRegions'])->middleware(['auth:svr_api', 'api']);
     Route::get('directories/districts', [ApiDirectoriesController::class, 'applicationsStatus'])->middleware(['auth:svr_api', 'api']);
     Route::get('directories/keeping_purposes', [ApiDirectoriesController::class, 'applicationsStatus'])->middleware(['auth:svr_api', 'api']);
     Route::get('directories/keeping_types', [ApiDirectoriesController::class, 'applicationsStatus'])->middleware(['auth:svr_api', 'api']);

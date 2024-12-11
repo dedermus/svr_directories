@@ -5,6 +5,7 @@ namespace Svr\Directories\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
@@ -17,11 +18,6 @@ class DirectoryAnimalsBreeds extends Model
     use GetTableName;
     use HasFactory;
 
-    /**
-     * Количество записей из запроса
-     * @var int
-     */
-    public int $breeds_count = 0;
     /**
      * Точное название таблицы с учетом схемы
      *
@@ -227,15 +223,15 @@ class DirectoryAnimalsBreeds extends Model
      * @param $search_data
      * @return array
      */
-    public function breedsList($per_page, $cur_page, $search_data): array
+    public static function breedsList($per_page, $cur_page, $search_data): array
     {
-        $where_array = [['breed_status', '=', 'enabled'], ['breed_status_delete', '=', 'active']];
+        $where_array = [['breed_status', '=', SystemStatusEnum::ENABLED->value], ['breed_status_delete', '=', SystemStatusDeleteEnum::ACTIVE->value]];
 
         if (isset($search_data['breed_name'])) $where_array[] = ['breed_name', 'ilike', '%'.$search_data['breed_name'].'%'];
         if (isset($search_data['specie_id'])) $where_array[] = ['specie_id', '=', $search_data['specie_id']];
 
-        $this->breeds_count = DB::table($this->table)->where($where_array)->count();
+        Config::set('total_records', DB::table(self::getTableName())->where($where_array)->count());
 
-        return DB::table($this->table)->where($where_array)->limit($per_page)->offset($per_page*($cur_page-1))->get()->toArray();
+        return DB::table(self::getTableName())->where($where_array)->limit($per_page)->offset($per_page*($cur_page-1))->get()->toArray();
     }
 }
