@@ -11,6 +11,10 @@ class DirectoriesServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Регистрируем routs
+        $this->loadRoutesFrom(__DIR__ . '/../routes/Api/api.php');
+        $this->register();
+
         // зарегистрировать переводы
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'svr-directories-lang');
 

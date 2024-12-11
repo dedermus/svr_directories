@@ -5,6 +5,7 @@ namespace Svr\Directories\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
@@ -14,6 +15,12 @@ class DirectoryAnimalsSpecies extends Model
 {
     use GetTableName;
     use HasFactory;
+
+    /**
+     * Количество записей из запроса
+     * @var int
+     */
+    public int $species_count = 0;
 
     /**
      * Точное название таблицы с учетом схемы
@@ -197,5 +204,23 @@ class DirectoryAnimalsSpecies extends Model
             'specie_status'        => trans('svr-core-lang::validation'),
             'specie_status_delete' => trans('svr-core-lang::validation'),
         ];
+    }
+
+    /**
+     * Список видов животных
+     * @param $per_page
+     * @param $cur_page
+     * @param $search_data
+     * @return array
+     */
+    public function speciesList($per_page, $cur_page, $search_data): array
+    {
+        $where_array = [['specie_status', '=', 'enabled'], ['specie_status_delete', '=', 'active']];
+
+        if (isset($search_data['specie_name'])) $where_array[] = ['specie_name', 'ilike', '%'.$search_data['specie_name'].'%'];
+
+        $this->species_count = DB::table($this->table)->where($where_array)->count();
+
+        return DB::table($this->table)->where($where_array)->limit($per_page)->offset($per_page*($cur_page-1))->get()->toArray();
     }
 }
