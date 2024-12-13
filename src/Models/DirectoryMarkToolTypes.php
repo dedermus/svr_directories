@@ -5,6 +5,8 @@ namespace Svr\Directories\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
@@ -197,5 +199,23 @@ class DirectoryMarkToolTypes extends Model
             'mark_tool_type_status'        => trans('svr-core-lang::validation'),
             'mark_tool_type_status_delete' => trans('svr-core-lang::validation'),
         ];
+    }
+
+    /**
+     * Список видов средств маркирования
+     * @param $per_page
+     * @param $cur_page
+     * @param $search_data
+     * @return array
+     */
+    public static function markToolTypesList($per_page, $cur_page, $search_data): array
+    {
+        $where_array = [['mark_tool_type_status', '=', SystemStatusEnum::ENABLED->value], ['mark_tool_type_status_delete', '=', SystemStatusDeleteEnum::ACTIVE->value]];
+
+        if (isset($search_data['mark_tool_type_name'])) $where_array[] = ['mark_tool_type_name', 'ilike', '%'.$search_data['mark_tool_type_name'].'%'];
+
+        Config::set('total_records', DB::table(self::getTableName())->where($where_array)->count());
+
+        return DB::table(self::getTableName())->where($where_array)->limit($per_page)->offset($per_page*($cur_page-1))->get()->toArray();
     }
 }

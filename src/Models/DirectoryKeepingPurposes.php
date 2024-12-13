@@ -5,6 +5,8 @@ namespace Svr\Directories\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
@@ -200,5 +202,23 @@ class DirectoryKeepingPurposes extends Model
             'keeping_purpose_status'        => trans('svr-core-lang::validation'),
             'keeping_purpose_status_delete' => trans('svr-core-lang::validation'),
         ];
+    }
+
+    /**
+     * Список причин содержания животных
+     * @param $per_page
+     * @param $cur_page
+     * @param $search_data
+     * @return array
+     */
+    public static function keepingPurposesList($per_page, $cur_page, $search_data): array
+    {
+        $where_array = [['keeping_purpose_status', '=', SystemStatusEnum::ENABLED->value], ['keeping_purpose_status_delete', '=', SystemStatusDeleteEnum::ACTIVE->value]];
+
+        if (isset($search_data['keeping_purpose_name'])) $where_array[] = ['keeping_purpose_name', 'ilike', '%'.$search_data['keeping_purpose_name'].'%'];
+
+        Config::set('total_records', DB::table(self::getTableName())->where($where_array)->count());
+
+        return DB::table(self::getTableName())->where($where_array)->limit($per_page)->offset($per_page*($cur_page-1))->get()->toArray();
     }
 }

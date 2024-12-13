@@ -5,6 +5,8 @@ namespace Svr\Directories\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
@@ -201,5 +203,24 @@ class DirectoryCountriesRegionsDistrict extends Model
             'district_status'        => trans('svr-core-lang::validation'),
             'district_status_delete' => trans('svr-core-lang::validation'),
         ];
+    }
+
+    /**
+     * Список районов
+     * @param $per_page
+     * @param $cur_page
+     * @param $search_data
+     * @return array
+     */
+    public static function districtsList($per_page, $cur_page, $search_data): array
+    {
+        $where_array = [['district_status', '=', SystemStatusEnum::ENABLED->value], ['district_status_delete', '=', SystemStatusDeleteEnum::ACTIVE->value]];
+
+        if (isset($search_data['district_name'])) $where_array[] = ['district_name', 'ilike', '%'.$search_data['district_name'].'%'];
+        if (isset($search_data['region_id'])) $where_array[] = ['region_id', '=', $search_data['region_id']];
+
+        Config::set('total_records', DB::table(self::getTableName())->where($where_array)->count());
+
+        return DB::table(self::getTableName())->where($where_array)->limit($per_page)->offset($per_page*($cur_page-1))->get()->toArray();
     }
 }

@@ -7,28 +7,24 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
-use Svr\Core\Enums\AnimalRegisterStatusEnum;
-use Svr\Core\Enums\ApplicationAnimalStatusEnum;
-use Svr\Core\Enums\SystemStatusEnum;
 use Svr\Core\Exceptions\CustomException;
 use Svr\Core\Resources\SvrApiResponseResource;
-use Svr\Data\Models\DataAnimals;
-use Svr\Data\Models\DataAnimalsCodes;
-use Svr\Data\Models\DataApplications;
-use Svr\Data\Models\DataCompaniesLocations;
-use Svr\Data\Models\DataCompaniesObjects;
-use Svr\Data\Resources\SvrApiAnimalsDataDictionaryResource;
-use Svr\Data\Resources\SvrApiAnimalsDataResource;
-use Svr\Data\Resources\SvrApiAnimalsListMarkResource;
-use Svr\Data\Resources\SvrApiAnimalsListResource;
 use Svr\Data\Resources\SvrApiBreedsListResource;
 use Svr\Data\Resources\SvrApiCountriesListResource;
+use Svr\Data\Resources\SvrApiDistrictsListResource;
+use Svr\Data\Resources\SvrApiGendersListResource;
+use Svr\Data\Resources\SvrApiKeepingPurposesListResource;
+use Svr\Data\Resources\SvrApiKeepingTypesListResource;
+use Svr\Data\Resources\SvrApiMarkStatusesListResource;
+use Svr\Data\Resources\SvrApiMarkTypesListResource;
+use Svr\Data\Resources\SvrApiOutBasisesListResource;
+use Svr\Data\Resources\SvrApiOutTypesListResource;
 use Svr\Data\Resources\SvrApiRegionsListResource;
 use Svr\Data\Resources\SvrApiSpeciesListResource;
+use Svr\Data\Resources\SvrApiToolsLocationsListResource;
+use Svr\Data\Resources\SvrApiToolTypesListResource;
 use Svr\Directories\Models\DirectoryAnimalsBreeds;
 use Svr\Directories\Models\DirectoryAnimalsSpecies;
 use Svr\Directories\Models\DirectoryCountries;
@@ -215,5 +211,416 @@ class ApiDirectoriesController extends Controller
         return new SvrApiResponseResource($data);
     }
 
+    /**
+     * Справочники районов
+     * @param Request $request
+     * @return JsonResponse|SvrApiResponseResource
+     * @throws Exception
+     */
+    public function directoriesDistricts(Request $request): SvrApiResponseResource|JsonResponse
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'region_id'     => ['int', Rule::exists(DirectoryCountriesRegion::getTableName(), 'region_id')],
+                'district_name' => ['string'],
+            ],
+            [
+                'region_id'     => trans('svr-core-lang::validation'),
+                'district_name' => trans('svr-core-lang::validation')
+            ]
+        );
 
+        $valid_data = $validator->validated();
+
+        $user = auth()->user();
+
+        $items_list = DirectoryCountriesRegionsDistrict::districtsList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
+
+        if(!$items_list OR count($items_list) < 1)
+        {
+            throw new CustomException('Не найдены районы');
+        }
+
+        //складываем все в коллекцию
+        $data = collect([
+            'user_id' => $user['user_id'],
+            'districts_list' => collect($items_list),
+            'status' => true,
+            'message' => '',
+            'response_resource_data' => SvrApiDistrictsListResource::class,
+            'response_resource_dictionary' => false,
+        ]);
+
+        //отдаем ресурс с ответом
+        return new SvrApiResponseResource($data);
+    }
+
+    /**
+     * Справочники причин содержания животных
+     * @param Request $request
+     * @return JsonResponse|SvrApiResponseResource
+     * @throws Exception
+     */
+    public function directoriesKeepingPurposes(Request $request): SvrApiResponseResource|JsonResponse
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'keeping_purpose_name' => ['string'],
+            ],
+            [
+                'keeping_purpose_name' => trans('svr-core-lang::validation')
+            ]);
+
+        $valid_data = $validator->validated();
+
+        $user = auth()->user();
+
+        $items_list = DirectoryKeepingPurposes::keepingPurposesList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
+
+        if(!$items_list OR count($items_list) < 1)
+        {
+            throw new CustomException('Не найдены причины содержания животных');
+        }
+
+        //складываем все в коллекцию
+        $data = collect([
+            'user_id' => $user['user_id'],
+            'keeping_purposes_list' => collect($items_list),
+            'status' => true,
+            'message' => '',
+            'response_resource_data' => SvrApiKeepingPurposesListResource::class,
+            'response_resource_dictionary' => false,
+        ]);
+
+        //отдаем ресурс с ответом
+        return new SvrApiResponseResource($data);
+    }
+
+    /**
+     * Справочники типов содержания животных
+     * @param Request $request
+     * @return JsonResponse|SvrApiResponseResource
+     * @throws Exception
+     */
+    public function directoriesKeepingTypes(Request $request): SvrApiResponseResource|JsonResponse
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'keeping_type_name' => ['string'],
+            ],
+            [
+                'keeping_type_name' => trans('svr-core-lang::validation')
+            ]);
+
+        $valid_data = $validator->validated();
+
+        $user = auth()->user();
+
+        $items_list = DirectoryKeepingTypes::keepingTypesList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
+
+        if(!$items_list OR count($items_list) < 1)
+        {
+            throw new CustomException('Не найдены типы содержания животных');
+        }
+
+        //складываем все в коллекцию
+        $data = collect([
+            'user_id' => $user['user_id'],
+            'keeping_types_list' => collect($items_list),
+            'status' => true,
+            'message' => '',
+            'response_resource_data' => SvrApiKeepingTypesListResource::class,
+            'response_resource_dictionary' => false,
+        ]);
+
+        //отдаем ресурс с ответом
+        return new SvrApiResponseResource($data);
+    }
+
+    /**
+     * Справочники мест нанесения средств маркирования
+     * @param Request $request
+     * @return JsonResponse|SvrApiResponseResource
+     * @throws Exception
+     */
+    public function directoriesToolsLocations(Request $request): SvrApiResponseResource|JsonResponse
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'tool_location_name' => ['string'],
+            ],
+            [
+                'tool_location_name' => trans('svr-core-lang::validation')
+            ]);
+
+        $valid_data = $validator->validated();
+
+        $user = auth()->user();
+
+        $items_list = DirectoryToolsLocations::toolsLocationsList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
+
+        if(!$items_list OR count($items_list) < 1)
+        {
+            throw new CustomException('Не найдены места нанесения средств маркирования');
+        }
+
+        //складываем все в коллекцию
+        $data = collect([
+            'user_id' => $user['user_id'],
+            'tools_locations_list' => collect($items_list),
+            'status' => true,
+            'message' => '',
+            'response_resource_data' => SvrApiToolsLocationsListResource::class,
+            'response_resource_dictionary' => false,
+        ]);
+
+        //отдаем ресурс с ответом
+        return new SvrApiResponseResource($data);
+    }
+
+    /**
+     * Справочники полов животных
+     * @param Request $request
+     * @return JsonResponse|SvrApiResponseResource
+     * @throws Exception
+     */
+    public function directoriesGenders(Request $request): SvrApiResponseResource|JsonResponse
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'gender_name' => ['string'],
+            ],
+            [
+                'gender_name' => trans('svr-core-lang::validation')
+            ]);
+
+        $valid_data = $validator->validated();
+
+        $user = auth()->user();
+
+        $items_list = DirectoryGenders::gendersList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
+
+        if(!$items_list OR count($items_list) < 1)
+        {
+            throw new CustomException('Не найдены гендеры животных');
+        }
+
+        //складываем все в коллекцию
+        $data = collect([
+            'user_id' => $user['user_id'],
+            'genders_list' => collect($items_list),
+            'status' => true,
+            'message' => '',
+            'response_resource_data' => SvrApiGendersListResource::class,
+            'response_resource_dictionary' => false,
+        ]);
+
+        //отдаем ресурс с ответом
+        return new SvrApiResponseResource($data);
+    }
+
+    /**
+     * Справочники оснований выбытия
+     * @param Request $request
+     * @return JsonResponse|SvrApiResponseResource
+     * @throws Exception
+     */
+    public function directoriesOutBasises(Request $request): SvrApiResponseResource|JsonResponse
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'out_basis_name' => ['string'],
+            ],
+            [
+                'out_basis_name' => trans('svr-core-lang::validation')
+            ]);
+
+        $valid_data = $validator->validated();
+
+        $user = auth()->user();
+
+        $items_list = DirectoryOutBasises::outBasisesList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
+
+        if(!$items_list OR count($items_list) < 1)
+        {
+            throw new CustomException('Не найдены основания выбытия животных');
+        }
+
+        //складываем все в коллекцию
+        $data = collect([
+            'user_id' => $user['user_id'],
+            'out_basises_list' => collect($items_list),
+            'status' => true,
+            'message' => '',
+            'response_resource_data' => SvrApiOutBasisesListResource::class,
+            'response_resource_dictionary' => false,
+        ]);
+
+        //отдаем ресурс с ответом
+        return new SvrApiResponseResource($data);
+    }
+
+    /**
+     * Справочники видов выбытия
+     * @param Request $request
+     * @return JsonResponse|SvrApiResponseResource
+     * @throws Exception
+     */
+    public function directoriesOutTypes(Request $request): SvrApiResponseResource|JsonResponse
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'out_type_name' => ['string'],
+            ],
+            [
+                'out_type_name' => trans('svr-core-lang::validation')
+            ]);
+
+        $valid_data = $validator->validated();
+
+        $user = auth()->user();
+
+        $items_list = DirectoryOutTypes::outTypesList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
+
+        if(!$items_list OR count($items_list) < 1)
+        {
+            throw new CustomException('Не найдены виды выбытия');
+        }
+
+        //складываем все в коллекцию
+        $data = collect([
+            'user_id' => $user['user_id'],
+            'out_types_list' => collect($items_list),
+            'status' => true,
+            'message' => '',
+            'response_resource_data' => SvrApiOutTypesListResource::class,
+            'response_resource_dictionary' => false,
+        ]);
+
+        //отдаем ресурс с ответом
+        return new SvrApiResponseResource($data);
+    }
+
+    /**
+     * Справочники статусов маркирования
+     * @param Request $request
+     * @return JsonResponse|SvrApiResponseResource
+     * @throws Exception
+     */
+    public function directoriesMarkStatuses(Request $request): SvrApiResponseResource|JsonResponse
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'mark_status_name' => ['string'],
+            ],
+            [
+                'mark_status_name' => trans('svr-core-lang::validation')
+            ]);
+
+        $valid_data = $validator->validated();
+
+        $user = auth()->user();
+
+        $items_list = DirectoryMarkStatuses::markStatusesList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
+
+        if(!$items_list OR count($items_list) < 1)
+        {
+            throw new CustomException('Не найдены статусы маркирования');
+        }
+
+        //складываем все в коллекцию
+        $data = collect([
+            'user_id' => $user['user_id'],
+            'mark_statuses_list' => collect($items_list),
+            'status' => true,
+            'message' => '',
+            'response_resource_data' => SvrApiMarkStatusesListResource::class,
+            'response_resource_dictionary' => false,
+        ]);
+
+        //отдаем ресурс с ответом
+        return new SvrApiResponseResource($data);
+    }
+
+    /**
+     * Справочники видов средств маркирования
+     * @param Request $request
+     * @return JsonResponse|SvrApiResponseResource
+     * @throws Exception
+     */
+    public function directoriesMarkToolTypes(Request $request): SvrApiResponseResource|JsonResponse
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'mark_tool_type_name' => ['string'],
+            ],
+            [
+                'mark_tool_type_name' => trans('svr-core-lang::validation')
+            ]);
+
+        $valid_data = $validator->validated();
+
+        $user = auth()->user();
+
+        $items_list = DirectoryMarkToolTypes::markToolTypesList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
+
+        if(!$items_list OR count($items_list) < 1)
+        {
+            throw new CustomException('Не найдены виды средств маркирования');
+        }
+
+        //складываем все в коллекцию
+        $data = collect([
+            'user_id' => $user['user_id'],
+            'mark_tool_types_list' => collect($items_list),
+            'status' => true,
+            'message' => '',
+            'response_resource_data' => SvrApiToolTypesListResource::class,
+            'response_resource_dictionary' => false,
+        ]);
+
+        //отдаем ресурс с ответом
+        return new SvrApiResponseResource($data);
+    }
+
+    /**
+     * Справочники видов маркирования
+     * @param Request $request
+     * @return JsonResponse|SvrApiResponseResource
+     * @throws Exception
+     */
+    public function directoriesMarkTypes(Request $request): SvrApiResponseResource|JsonResponse
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'mark_type_name' => ['string'],
+            ],
+            [
+                'mark_type_name' => trans('svr-core-lang::validation')
+            ]);
+
+        $valid_data = $validator->validated();
+
+        $user = auth()->user();
+
+        $items_list = DirectoryMarkTypes::markTypesList(Config::get('per_page'), Config::get('cur_page'), $valid_data);
+
+        if(!$items_list OR count($items_list) < 1)
+        {
+            throw new CustomException('Не найдены виды маркирования');
+        }
+
+        //складываем все в коллекцию
+        $data = collect([
+            'user_id' => $user['user_id'],
+            'mark_types_list' => collect($items_list),
+            'status' => true,
+            'message' => '',
+            'response_resource_data' => SvrApiMarkTypesListResource::class,
+            'response_resource_dictionary' => false,
+        ]);
+
+        //отдаем ресурс с ответом
+        return new SvrApiResponseResource($data);
+    }
 }

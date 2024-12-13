@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
@@ -189,5 +191,23 @@ class DirectoryOutTypes extends Model
             'out_type_status' => trans('svr-core-lang::validation'),
             'out_type_status_delete' => trans('svr-core-lang::validation'),
         ];
+    }
+
+    /**
+     * Список видов выбытия животных
+     * @param $per_page
+     * @param $cur_page
+     * @param $search_data
+     * @return array
+     */
+    public static function outTypesList($per_page, $cur_page, $search_data): array
+    {
+        $where_array = [['out_type_status', '=', SystemStatusEnum::ENABLED->value], ['out_type_status_delete', '=', SystemStatusDeleteEnum::ACTIVE->value]];
+
+        if (isset($search_data['out_type_name'])) $where_array[] = ['out_type_name', 'ilike', '%'.$search_data['out_type_name'].'%'];
+
+        Config::set('total_records', DB::table(self::getTableName())->where($where_array)->count());
+
+        return DB::table(self::getTableName())->where($where_array)->limit($per_page)->offset($per_page*($cur_page-1))->get()->toArray();
     }
 }

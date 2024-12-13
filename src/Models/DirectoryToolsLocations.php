@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Svr\Core\Enums\SystemStatusDeleteEnum;
 use Svr\Core\Enums\SystemStatusEnum;
@@ -193,5 +195,23 @@ class DirectoryToolsLocations extends Model
             'tool_location_status' => trans('svr-core-lang::validation'),
             'tool_location_status_delete' => trans('svr-core-lang::validation'),
         ];
+    }
+
+    /**
+     * Список мест нанесения средств маркирования
+     * @param $per_page
+     * @param $cur_page
+     * @param $search_data
+     * @return array
+     */
+    public static function toolsLocationsList($per_page, $cur_page, $search_data): array
+    {
+        $where_array = [['tool_location_status', '=', SystemStatusEnum::ENABLED->value], ['tool_location_status_delete', '=', SystemStatusDeleteEnum::ACTIVE->value]];
+
+        if (isset($search_data['tool_location_name'])) $where_array[] = ['tool_location_name', 'ilike', '%'.$search_data['tool_location_name'].'%'];
+
+        Config::set('total_records', DB::table(self::getTableName())->where($where_array)->count());
+
+        return DB::table(self::getTableName())->where($where_array)->limit($per_page)->offset($per_page*($cur_page-1))->get()->toArray();
     }
 }
