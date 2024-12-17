@@ -65,13 +65,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены виды животных');
+            throw new CustomException('Не найдены виды животных', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
-            'species_list' =>collect($items_list),
+            'species_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiSpeciesListResource::class,
@@ -109,13 +110,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены породы животных');
+            throw new CustomException('Не найдены породы животных', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
-            'breeds_list' =>collect($items_list),
+            'breeds_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiBreedsListResource::class,
@@ -150,13 +152,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены страны');
+            throw new CustomException('Не найдены страны', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
-            'countries_list' =>collect($items_list),
+            'countries_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiCountriesListResource::class,
@@ -194,13 +197,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены регионы');
+            throw new CustomException('Не найдены регионы', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
             'regions_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiRegionsListResource::class,
@@ -238,13 +242,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены районы');
+            throw new CustomException('Не найдены районы', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
             'districts_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiDistrictsListResource::class,
@@ -279,13 +284,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены причины содержания животных');
+            throw new CustomException('Не найдены причины содержания животных', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
             'keeping_purposes_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiKeepingPurposesListResource::class,
@@ -320,13 +326,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены типы содержания животных');
+            throw new CustomException('Не найдены типы содержания животных', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
             'keeping_types_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiKeepingTypesListResource::class,
@@ -361,13 +368,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены места нанесения средств маркирования');
+            throw new CustomException('Не найдены места нанесения средств маркирования', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
             'tools_locations_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiToolsLocationsListResource::class,
@@ -402,13 +410,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены гендеры животных');
+            throw new CustomException('Не найдены гендеры животных', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
             'genders_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiGendersListResource::class,
@@ -443,13 +452,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены основания выбытия животных');
+            throw new CustomException('Не найдены основания выбытия животных', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
             'out_basises_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiOutBasisesListResource::class,
@@ -484,13 +494,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены виды выбытия');
+            throw new CustomException('Не найдены виды выбытия', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
             'out_types_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiOutTypesListResource::class,
@@ -525,13 +536,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены статусы маркирования');
+            throw new CustomException('Не найдены статусы маркирования', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
             'mark_statuses_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiMarkStatusesListResource::class,
@@ -566,13 +578,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены виды средств маркирования');
+            throw new CustomException('Не найдены виды средств маркирования', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
             'mark_tool_types_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiToolTypesListResource::class,
@@ -607,13 +620,14 @@ class ApiDirectoriesController extends Controller
 
         if(!$items_list OR count($items_list) < 1)
         {
-            throw new CustomException('Не найдены виды маркирования');
+            throw new CustomException('Не найдены виды маркирования', 200);
         }
 
         //складываем все в коллекцию
         $data = collect([
             'user_id' => $user['user_id'],
             'mark_types_list' => collect($items_list),
+            'without_keys' => true,
             'status' => true,
             'message' => '',
             'response_resource_data' => SvrApiMarkTypesListResource::class,
